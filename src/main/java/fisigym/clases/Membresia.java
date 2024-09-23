@@ -262,4 +262,76 @@ public class Membresia {
         
         this.almacenarMembresia();
     }
+
+    public String getDniUsuario() {
+        return dniUsuario;
+    }
+
+    public void setDniUsuario(String dniUsuario) {
+        this.dniUsuario = dniUsuario;
+    }
+
+    public boolean isEstadoMembresia() {
+        return estadoMembresia;
+    }
+
+    public void setEstadoMembresia(boolean estadoMembresia) {
+        this.estadoMembresia = estadoMembresia;
+    }
+
+    public String getTipoMembresia() {
+        return tipoMembresia;
+    }
+
+    public void setTipoMembresia(String tipoMembresia) {
+        this.tipoMembresia = tipoMembresia;
+    }
+
+    public int getDuracionMembresia() {
+        return duracionMembresia;
+    }
+
+    public void setDuracionMembresia(int duracionMembresia) {
+        this.duracionMembresia = duracionMembresia;
+    }
+
+    public LocalDate getFechaInicial() {
+        return fechaInicial;
+    }
+
+    public void setFechaInicial(LocalDate fechaInicial) {
+        this.fechaInicial = fechaInicial;
+    }
+
+    public LocalDate getFechaFinal() {
+        return fechaFinal;
+    }
+
+    public void setFechaFinal(LocalDate fechaFinal) {
+        this.fechaFinal = fechaFinal;
+    }
+
+    public float getPrecioMembresia() {
+        return precioMembresia;
+    }
+
+    public void setPrecioMembresia(float precioMembresia) {
+        this.precioMembresia = precioMembresia;
+    }
+
+    public float getDescuento() {
+        return descuento;
+    }
+
+    public void setDescuento(float descuento) {
+        this.descuento = descuento;
+    }
+
+    public float getPrecioFinal() {
+        return precioFinal;
+    }
+
+    public void setPrecioFinal(float precioFinal) {
+        this.precioFinal = precioFinal;
+    }
 }
