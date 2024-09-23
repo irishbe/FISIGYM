@@ -26,17 +26,22 @@ public class Usuario {
     }
     
     private void almacenarUsuario() {
+        var utilidades = new Utilidades();
+        
         try (BufferedWriter archivoUsuarios = new BufferedWriter(new FileWriter("usuarios.txt", true))) {
             archivoUsuarios.write(this.toString());
             archivoUsuarios.newLine();
+            
+            utilidades.limpiarPantalla();
+            System.out.println("\n¡Usuario registrado con exito!");
+            utilidades.pausa();
+            
         } catch (IOException e) {
             System.out.println("Ocurrió un error al registrar el usuario.\n" + e.getMessage());
         }
     }
 
     public void registrarUsuario() {
-        var utilidades = new Utilidades();
-        
         System.out.println("\n------------------- REGISTRAR CUENTA -------------------");
         System.out.print("Nombre de usuario:  "); nombreUsuario = scanner.nextLine();
         System.out.print("Correo: "); correo  = scanner.nextLine();
@@ -46,16 +51,12 @@ public class Usuario {
         System.out.print("Apellidos:  "); apellido = scanner.nextLine();
         System.out.println("---------------------------------------------------------");
         
-        membresia.registrarPlanUsuario();
+        membresia.registrarMembresia(dni);
         
         this.almacenarUsuario();
-        
-        utilidades.limpiarPantalla();
-        System.out.println("\n¡Usuario registrado con exito!");
-        utilidades.pausa();
     }
     
-    private boolean verificarUsuario(String correoUsuarioIngresado, String contraseniaIngresada) {
+    private boolean verificarUsuario(String identificadorIngresado, String contraseniaIngresada) {
         try (BufferedReader archivoUsuarios = new BufferedReader(new FileReader("usuarios.txt"))) {
             String linea;
 
@@ -67,11 +68,11 @@ public class Usuario {
                 String correoRegistrado = datos[1];
                 String contraseniaRegistrada = datos[2];
 
-                if (correoUsuarioIngresado.equals(nombreUsuarioRegistrado) && contraseniaIngresada.equals(contraseniaRegistrada)) {
+                if (identificadorIngresado.equals(nombreUsuarioRegistrado) && contraseniaIngresada.equals(contraseniaRegistrada)) {
                     return true;
                 }
                 
-                if (correoUsuarioIngresado.equals(correoRegistrado) && contraseniaIngresada.equals(contraseniaRegistrada)) {
+                if (identificadorIngresado.equals(correoRegistrado) && contraseniaIngresada.equals(contraseniaRegistrada)) {
                     return true;
                 }
             }
@@ -83,18 +84,81 @@ public class Usuario {
     }
     
     public void iniciarSesion() {
-        String correoUsuarioIngresado;
+        var servicios = new Servicios();
+        var utilidades = new Utilidades();
+        
+        String identificadorIngresado;
         String contraseniaIngresada;
         
         System.out.println("\n-------------------- INICIAR SESIÓN --------------------");
-        System.out.print("Correo o usuario:  "); correoUsuarioIngresado = scanner.nextLine();
+        System.out.print("Correo o usuario:  "); identificadorIngresado = scanner.nextLine();
         System.out.print("Contraseña:  "); contraseniaIngresada = scanner.nextLine();
         System.out.println("---------------------------------------------------------");
         
-        if (verificarUsuario(correoUsuarioIngresado, contraseniaIngresada)) {
+        if (verificarUsuario(identificadorIngresado, contraseniaIngresada)) {
             System.out.println("Inicio de sesión exitoso.");
+            utilidades.pausa();
+            servicios.menuServicios();
+            
         } else {
-            System.out.println("Correo o contraseña incorrectos.");
+            System.out.println("Correo/usuario o contraseña incorrectos.");
+            utilidades.pausa();
         }
+    }
+
+    public Membresia getMembresia() {
+        return membresia;
+    }
+
+    public void setMembresia(Membresia membresia) {
+        this.membresia = membresia;
+    }
+
+    public String getNombreUsuario() {
+        return nombreUsuario;
+    }
+
+    public void setNombreUsuario(String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public String getDni() {
+        return dni;
+    }
+
+    public void setDni(String dni) {
+        this.dni = dni;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
+    public String getContrasenia() {
+        return contrasenia;
+    }
+
+    public void setContrasenia(String contrasenia) {
+        this.contrasenia = contrasenia;
     }
 }
