@@ -8,6 +8,7 @@ public class Main {
         var scanner = new Scanner(System.in);
         var usuario = new Usuario();
         var utilidades = new Utilidades();
+        
         int opcion = -1;
         
         String logo = """
@@ -38,7 +39,6 @@ public class Main {
                     case 1 -> {
                         utilidades.limpiarPantalla();
                         usuario.iniciarSesion();
-                        utilidades.pausa();
                     }
                     case 2 -> {
                         utilidades.limpiarPantalla();
