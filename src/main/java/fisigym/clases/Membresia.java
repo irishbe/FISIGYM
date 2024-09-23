@@ -1,10 +1,24 @@
 package fisigym.clases;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.time.LocalDate;
 
 public class Membresia {
     private final Scanner scanner = new Scanner(System.in);
+    
+    private String dniUsuario;
+    private boolean estadoMembresia;
+    private String tipoMembresia;
+    private int duracionMembresia;
+    private LocalDate fechaInicial;
+    private LocalDate fechaFinal;
+    private float precioMembresia;
+    private float descuento;
+    private float precioFinal;
     
     public void planDiamante(){
         System.out.println("\n------------------- NUESTROS PLANES DE MEMBRESÍA -------------------");    
@@ -91,7 +105,7 @@ public class Membresia {
         System.out.println("\n\t¡INSCRÍBETE YA!");
     }
     
-    public void registrarMembresia() {
+    public String seleccionarMembresia() {
         var utilidades = new Utilidades();
         
         int opcion = -1;
@@ -119,12 +133,15 @@ public class Membresia {
                 switch (opcion){
                     case 1 -> {
                         System.out.println("Usted ha escogido el plan DIAMANTE");
+                        return "DIAMANTE";
                     }
                     case 2 -> {
                         System.out.println("Usted ha escogido el plan ZAFIRO");
+                        return "ZAFIRO";
                     }
                     case 3 -> {
                         System.out.println("Usted ha escogido el plan ESMERALDA");
+                        return "ESMERALDA";
                     }
                     default -> {
                         System.out.println("Entrada no válida. Por favor, ingrese una de las opciones.");
@@ -139,12 +156,14 @@ public class Membresia {
                 scanner.nextLine();
             }
         } while (opcion != 1 && opcion != 2 && opcion !=3);
+        
+        return "";
     }
     
-    public void registrarMes() {
+    public int seleccionarMeses() {
         var utilidades = new Utilidades();
         
-        int opcion = -1;
+        int mesEscogido = -1;
         
         do {
             utilidades.limpiarPantalla();
@@ -152,9 +171,9 @@ public class Membresia {
             
             try {
                 System.out.print("\nSeleccione el número de meses que desea inscribirse): ");
-                opcion = scanner.nextInt();
+                mesEscogido = scanner.nextInt();
 
-                switch (opcion){
+                switch (mesEscogido){
                     case 1 -> {
                         System.out.println("Usted ha escogido 1 MES");
                     }
@@ -182,18 +201,65 @@ public class Membresia {
                 utilidades.pausa();
                 scanner.nextLine();
             }
-        } while (opcion != 1 && opcion != 2 && opcion != 3 && opcion !=6 && opcion !=12);
+        } while (mesEscogido != 1 && mesEscogido != 2 && mesEscogido != 3 && mesEscogido !=6 && mesEscogido !=12);
+        
+        return mesEscogido;
     }
     
-    public void registrarPlanUsuario() {
+    //------------------------------------------------------------------------------------------------------------------------------------------
+    @Override
+    public String toString() {
+        return dniUsuario + "><" + estadoMembresia + "><" + tipoMembresia + "><" +  duracionMembresia + "><" + fechaInicial + "><" + fechaFinal + "><" + precioMembresia + "><" + descuento + "><" + precioFinal;
+    }
+    
+    private void almacenarMembresia() {
         var utilidades = new Utilidades();
         
+        try (BufferedWriter archivoUsuarios = new BufferedWriter(new FileWriter("membresias.txt", true))) {
+            archivoUsuarios.write(this.toString());
+            archivoUsuarios.newLine();
+            
+            utilidades.limpiarPantalla();
+            System.out.println("\n¡Membresía registrada con exito!");
+            utilidades.pausa();
+            
+        } catch (IOException e) {
+            System.out.println("Ocurrió un error al registrar la membresia.\n" + e.getMessage());
+        }
+    }
+    
+    public void registrarMembresia(String dni) {
+        var utilidades = new Utilidades();
+        
+        dniUsuario = dni;
+        
         do {
-            registrarMembresia();
+            tipoMembresia = seleccionarMembresia();
         } while(utilidades.confirmacion() == false);
         
         do {
-            registrarMes();
+            duracionMembresia = seleccionarMeses();
         } while(utilidades.confirmacion() == false);
+        
+        switch (tipoMembresia){
+            case "DIAMANTE" -> precioMembresia = 89.99F;
+            case "ZAFIRO" -> precioMembresia = 69.99F;
+            case "ESMERALDA" -> precioMembresia = 59.99F;
+        }
+        
+        switch (duracionMembresia){
+            case 1 -> descuento = 0.00F;
+            case 2 -> descuento = 0.10F;
+            case 3 -> descuento = 0.15F;
+            case 6 -> descuento = 0.30F;
+            case 12 -> descuento = 0.45F;
+        }
+        
+        precioFinal = (1 - descuento)*(precioMembresia * duracionMembresia);
+        estadoMembresia = true;
+        fechaInicial = LocalDate.now();
+        fechaFinal = fechaInicial.plusMonths(duracionMembresia);
+        
+        this.almacenarMembresia();
     }
 }
