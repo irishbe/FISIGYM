@@ -9,6 +9,8 @@ import java.util.Scanner;
 
 public class Usuario {
     private Membresia membresia = new Membresia();
+    final Scanner scanner = new Scanner(System.in);
+    
     private String nombreUsuario;
     private String correo;
     private String dni;
@@ -16,13 +18,49 @@ public class Usuario {
     private String apellido;
     private String contrasenia;
     
-    private final Scanner scanner = new Scanner(System.in);
-    
     public Usuario(){};
     
     @Override
     public String toString() {
         return nombreUsuario + "><" + correo + "><" + contrasenia + "><" +  dni + "><" + nombre + "><" + apellido;
+    }
+    
+    public void iniciarSesion() {
+        var servicios = new Servicios();
+        var utilidades = new Utilidades();
+        
+        String identificadorIngresado;
+        String contraseniaIngresada;
+        
+        System.out.println("\n-------------------- INICIAR SESIÓN --------------------");
+        System.out.print("Correo o usuario:  "); identificadorIngresado = scanner.nextLine();
+        System.out.print("Contraseña:  "); contraseniaIngresada = scanner.nextLine();
+        System.out.println("---------------------------------------------------------");
+        
+        if (verificarUsuario(identificadorIngresado, contraseniaIngresada)) {
+            System.out.println("Inicio de sesión exitoso.");
+            utilidades.pausa();
+            servicios.menuServicios();
+        
+        } else {
+            System.out.println("Correo/usuario o contraseña incorrectos.");
+            utilidades.pausa();
+        }
+    }
+    
+    public void registrarUsuario() {
+        System.out.println("\n------------------- REGISTRAR CUENTA -------------------");
+        System.out.print("Nombre de usuario:  "); nombreUsuario = scanner.nextLine();
+        System.out.print("Correo: "); correo  = scanner.nextLine();
+        System.out.print("Contraseña: "); contrasenia  = scanner.nextLine();
+        System.out.print("DNI:  "); dni = scanner.nextLine();
+        System.out.print("Nombres:  "); nombre = scanner.nextLine();
+        System.out.print("Apellidos:  "); apellido = scanner.nextLine();
+        System.out.println("---------------------------------------------------------");
+        
+        membresia.registrarMembresia(dni);
+        
+        this.almacenarUsuario();
     }
     
     private void almacenarUsuario() {
@@ -40,24 +78,9 @@ public class Usuario {
             System.out.println("Ocurrió un error al registrar el usuario.\n" + e.getMessage());
         }
     }
-
-    public void registrarUsuario() {
-        System.out.println("\n------------------- REGISTRAR CUENTA -------------------");
-        System.out.print("Nombre de usuario:  "); nombreUsuario = scanner.nextLine();
-        System.out.print("Correo: "); correo  = scanner.nextLine();
-        System.out.print("Contraseña: "); contrasenia  = scanner.nextLine();
-        System.out.print("DNI:  "); dni = scanner.nextLine();
-        System.out.print("Nombres:  "); nombre = scanner.nextLine();
-        System.out.print("Apellidos:  "); apellido = scanner.nextLine();
-        System.out.println("---------------------------------------------------------");
-        
-        membresia.registrarMembresia(dni);
-        
-        this.almacenarUsuario();
-    }
     
     private boolean verificarUsuario(String identificadorIngresado, String contraseniaIngresada) {
-        try (BufferedReader archivoUsuarios = new BufferedReader(new FileReader("usuarios.txt"))) {
+        try ( BufferedReader archivoUsuarios = new BufferedReader( new FileReader("usuarios.txt") ) ) {
             String linea;
 
             while ((linea = archivoUsuarios.readLine()) != null) {
@@ -81,29 +104,6 @@ public class Usuario {
         }
         
         return false;
-    }
-    
-    public void iniciarSesion() {
-        var servicios = new Servicios();
-        var utilidades = new Utilidades();
-        
-        String identificadorIngresado;
-        String contraseniaIngresada;
-        
-        System.out.println("\n-------------------- INICIAR SESIÓN --------------------");
-        System.out.print("Correo o usuario:  "); identificadorIngresado = scanner.nextLine();
-        System.out.print("Contraseña:  "); contraseniaIngresada = scanner.nextLine();
-        System.out.println("---------------------------------------------------------");
-        
-        if (verificarUsuario(identificadorIngresado, contraseniaIngresada)) {
-            System.out.println("Inicio de sesión exitoso.");
-            utilidades.pausa();
-            servicios.menuServicios();
-            
-        } else {
-            System.out.println("Correo/usuario o contraseña incorrectos.");
-            utilidades.pausa();
-        }
     }
 
     public Membresia getMembresia() {
