@@ -83,10 +83,11 @@ public class Membresia {
         System.out.println("-\tPrecio: s/59.99");
         
         System.out.println("\n\t¡INSCRÍBETE YA!");
+        System.out.println("\n--------------------------------------------------------------------");
     }
     
     public void mostrarMeses(){
-        System.out.println("\n------------------- NUESTROS DESCUENTOS POR MES -------------------");    
+        System.out.println("\n------------------- NUESTROS DESCUENTOS POR MES -------------------");   
         System.out.println("\n\t1 MES: ");
         System.out.println("-\tSin descuento");
  
@@ -103,6 +104,7 @@ public class Membresia {
         System.out.println("-\t45% descuento");
 
         System.out.println("\n\t¡INSCRÍBETE YA!");
+        System.out.println("\n------------------------------------------------2-------------------");   
     }
     
     public String seleccionarMembresia() {
@@ -206,7 +208,6 @@ public class Membresia {
         return mesEscogido;
     }
     
-    //------------------------------------------------------------------------------------------------------------------------------------------
     @Override
     public String toString() {
         return dniUsuario + "><" + estadoMembresia + "><" + tipoMembresia + "><" +  duracionMembresia + "><" + fechaInicial + "><" + fechaFinal + "><" + precioMembresia + "><" + descuento + "><" + precioFinal;
