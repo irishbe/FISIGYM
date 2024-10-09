@@ -27,12 +27,13 @@ public class Main {
             System.out.println("Tu entrenamiento, a un clic de distancia\n");
             System.out.println("1.\tIniciar sesión");
             System.out.println("2.\tRegistrarse");
-            System.out.println("3.\tAdministrador");
+            System.out.println("3.\tPersonal");
             System.out.println("\n0.\tSalir del programa");
 
             try {
                 System.out.print("\nDigite su opción: ");
                 opcion = scanner.nextInt();
+                scanner.nextLine();
                 
                 switch (opcion){
                     case 0 -> {
@@ -42,8 +43,6 @@ public class Main {
                     case 1 -> {
                         utilidades.limpiarPantalla();
                         usuario.iniciarSesion();
-                       
-                        
                     }
                     case 2 -> {
                         utilidades.limpiarPantalla();

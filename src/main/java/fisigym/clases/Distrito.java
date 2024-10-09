@@ -1,269 +1,306 @@
-
 package fisigym.clases;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+public class Distrito {
+    private int idDistrito;
+    private int idCiudad;  // Relación con Ciudad
+    private String nombreDistrito;
 
-public class  Distrito {
+    private final Scanner scanner = new Scanner(System.in);
+    private final String archivoDistrito = "distritos.txt";
+    private final Utilidades utilidades = new Utilidades();
     
-    final Scanner scanner = new Scanner(System.in);
-    
-    int idDistrito;
-    String nombreDistrito;
-    int idCiudad;
-    
-    
-    
-    
- 
-    
+    // Constructor
+    public Distrito(int idDistrito, int idCiudad, String nombreDistrito) {
+        this.idDistrito = idDistrito;
+        this.idCiudad = idCiudad;
+        this.nombreDistrito = nombreDistrito;
+    }
 
     public Distrito() {
     }
     
+    // Método toString para formatear el guardado en archivo
     @Override
     public String toString() {
-        return  idDistrito + "><" + idCiudad + "><" + nombreDistrito;
+        return idDistrito + "><" + idCiudad + "><" + nombreDistrito;
     }
     
-    public void registrarDistrito(int idCiudades){
+    // Método para generar un ID único para distritos
+    public int generarIdUnico() {
+        List<Integer> idsExistentes = obtenerIdsExistentes();
+        int nuevoId = 1;
+
+        if (!idsExistentes.isEmpty()) {
+            int idMaximo = idsExistentes.stream().max(Integer::compare).orElse(0);
+            nuevoId = idMaximo + 1;
+
+            while (idsExistentes.contains(nuevoId)) {
+                nuevoId++;
+            }
+        }
+
+        return nuevoId;
+    }
+
+    // Método para obtener todos los IDs de distritos almacenados en el archivo
+    public List<Integer> obtenerIdsExistentes() {
+        List<Integer> idsExistentes = new ArrayList<>();
         
-        System.out.println("\n------------------- REGISTRAR CIUDAD -------------------");
-        System.out.print("Nombre de ciudad:  "); nombreDistrito  = scanner.nextLine();
-        idDistrito = (int)(Math.random() * 1000);
-        idCiudad  = idCiudades;
-        scanner.nextLine();
+        try (BufferedReader archivoDistritos = new BufferedReader(new FileReader(archivoDistrito))) {
+            String line;
+            while ((line = archivoDistritos.readLine()) != null) {
+                String[] datos = line.split("><");
+                int idDistritoGuardado = Integer.parseInt(datos[0]);
+                idsExistentes.add(idDistritoGuardado);
+            }
+        } catch (IOException e) {
+            System.out.println("Ocurrió un error al leer los IDs existentes.");
+        }
+        
+        return idsExistentes;
+    }
+
+    public void registrarDistrito() {
+        System.out.println("\n------------------- REGISTRAR DISTRITO -------------------");
+        
+        // Seleccionar ciudad existente
+        Ciudad ciudad = new Ciudad();
+        ciudad.listarCiudades();
+        
+        System.out.print("ID de la ciudad: ");
+        idCiudad = Integer.parseInt(scanner.nextLine().trim());
+        
+        System.out.print("Nombre de distrito: ");
+        nombreDistrito = scanner.nextLine().trim();
+
+        if (nombreDistrito.isEmpty()) {
+            System.out.println("El nombre del distrito no puede estar vacío.");
+            utilidades.pausa();
+            return;
+        }
+
+        // Generar un ID único
+        idDistrito = generarIdUnico();
+        System.out.println("ID del distrito: " + idDistrito);
         System.out.println("---------------------------------------------------------");
         
-         
         this.guardarDistrito();
-        //this.guardarIdsEnArchivo();
-        
     }
     
-    public void guardarDistrito(){
-        var utilidades = new Utilidades();
-        
-        try (BufferedWriter archivoCiudades = new BufferedWriter(new FileWriter("distritos.txt", true))) {
-            
-            archivoCiudades.write(this.toString());
-            archivoCiudades.newLine();
-            
-            utilidades.limpiarPantalla();
-            System.out.println("\n¡Distrito registrado con exito!");
+    public void guardarDistrito() {    
+        try (BufferedWriter archivoDistritos = new BufferedWriter(new FileWriter(archivoDistrito, true))) {
+            archivoDistritos.write(this.toString());
+            archivoDistritos.newLine();
+            System.out.println("\n¡Distrito registrado con éxito!");
             utilidades.pausa();
-            
         } catch (IOException e) {
-            System.out.println("Ocurrió un error al registrar el distrito" );
+            System.out.println("Ocurrió un error al registrar el distrito.");
+            utilidades.pausa();
         }
     }
     
-    /*public void guardarIdsDistrito() {
-    
-    File archivoIds = new File("ids_ciudades.txt");
-    try (BufferedReader archivoCiudades = new BufferedReader(new FileReader("ciudades.txt"));
-         BufferedWriter archivoIdsWriter = new BufferedWriter(new FileWriter(archivoIds))) {
-
-        String line;
-        while ((line = archivoCiudades.readLine()) != null) {
-            
-            String[] datos = line.split("><");
-            String idCiudadGuardada = datos[0]; 
-
-            
-            archivoIdsWriter.write(idCiudadGuardada);
-            archivoIdsWriter.newLine(); 
-
-          
-            
-        }
-
+    public void listarDistritos() {
+        System.out.println("\n------------------- LISTA DE DISTRITOS -------------------");
         
-
-    } catch (IOException e) {
-        System.out.println("Ocurrio un error al leer/escribir los archivos");
-    }
-}*/
-    
-    public void leerDistrito(){
-        try (BufferedReader archivoDistritos = new BufferedReader( new FileReader("distritos.txt") )){
+        try (BufferedReader archivoDistritos = new BufferedReader(new FileReader(archivoDistrito))) {
             String line;
-            while((line = archivoDistritos.readLine()) != null){
+            boolean hayDistritos = false;
+
+            System.out.println("\tID\tID Ciudad\tNombres");
+
+            while ((line = archivoDistritos.readLine()) != null) {
                 String[] datos = line.split("><");
-                String idDistritoGuardado = datos[0];
-                String nombreDistritoGuardado = datos[1];
-                String idCiudadGuardada = datos[2];
-                System.out.println("idDis: "+ idDistritoGuardado  +  "Nombre :" + nombreDistritoGuardado + "idCiudad : " + idCiudadGuardada);
+                System.out.println("\t" + datos[0] + "\t" + datos[1] + "\t\t" + datos[2]);
+                hayDistritos = true;
             }
-          
+
+            if (!hayDistritos) {
+                System.out.println("No hay distritos registrados.");
+                utilidades.pausa();
+            }
+        } catch (IOException e) {
+            System.out.println("Ocurrió un error al leer los distritos.");
+            utilidades.pausa();
         }
-        catch(IOException e){
-            System.out.println("Ocurrio un error al leer"  );
-        }
-        
     }
     
-    public void actualizarDistrito(){
-        
-        boolean distritoEncontrado= false;
+    public void actualizarDistrito() {
+        String idDistritoIngresada;
+        boolean distritoEncontrado = false;
         String nuevoNombreDistrito;
-        String idDistritoIngresado;
-        
-        System.out.print("Ingrese el id del distrito : ");idDistritoIngresado =scanner.nextLine();
-        
         List<String> distritos = new ArrayList<>();
+
+        listarDistritos();
+        System.out.print("\nIngrese el ID del distrito a actualizar: ");
+        idDistritoIngresada = scanner.nextLine();
         
-        try (BufferedReader archivoDistritos = new BufferedReader( new FileReader("distritos.txt") )){
+        try (BufferedReader archivoDistritos = new BufferedReader(new FileReader(archivoDistrito))) {
             String line;
-            while((line = archivoDistritos.readLine()) != null){
+
+            while ((line = archivoDistritos.readLine()) != null) {
                 String[] datos = line.split("><");
                 String idDistritoGuardado = datos[0];
-                String nombreDistritoGuardado = datos[1];
-                if(idDistritoGuardado.equals(idDistritoIngresado) ){
-                    System.out.println("Ingrese el nuevo nombre del distrito  : ");nuevoNombreDistrito= scanner.nextLine();
-                    distritos.add(idDistritoGuardado + "><" + nuevoNombreDistrito);
-                    distritoEncontrado = true; 
-                }
-                else {
+
+                if (idDistritoGuardado.equals(idDistritoIngresada)) {
+                    System.out.print("\nIngrese el nuevo nombre del distrito: ");
+                    nuevoNombreDistrito = scanner.nextLine();
+
+                    if (nuevoNombreDistrito.isEmpty()) {
+                        System.out.println("El nombre no puede estar vacío.");
+                        utilidades.pausa();
+                        return;
+                    }
+
+                    distritos.add(idDistritoGuardado + "><" + datos[1] + "><" + nuevoNombreDistrito);
+                    distritoEncontrado = true;
+                } else {
                     distritos.add(line);
                 }
-                
             }
-          
-        }
-        catch(IOException e){
-            System.out.println("Ocurrio un error al iniciar leer el mensaje" );
-        }
-        
-        if(distritoEncontrado){
-            try(BufferedWriter archivoDistrito = new BufferedWriter(new FileWriter("distrito.txt"))){
-                for (String distrito : distritos) {
-                archivoDistrito.write(distrito);
-                archivoDistrito.newLine(); 
-            }
-            System.out.println("El distrito ha sido actualizado exitosamente.");
         } catch (IOException e) {
-            System.out.println("Ocurrio un error al actualizar ");
-            }
-            
+            System.out.println("Ocurrió un error al leer los distritos.");
+            utilidades.pausa();
         }
-        else {
-            System.out.println("No se encontro el distrito con el ID proporcionado.");
+        
+        if (distritoEncontrado) {
+            try (BufferedWriter archivoDistritos = new BufferedWriter(new FileWriter(archivoDistrito))) {
+                for (String distrito : distritos) {
+                    archivoDistritos.write(distrito);
+                    archivoDistritos.newLine();
+                }
+
+                System.out.println("El distrito ha sido actualizado exitosamente.");
+                utilidades.pausa();
+
+            } catch (IOException e) {
+                System.out.println("Ocurrió un error al actualizar el distrito.");
+                utilidades.pausa();
+            }
+        } else {
+            System.out.println("No se encontró un distrito con el ID proporcionado.");
+            utilidades.pausa();
         }
     }
     
-    public void eliminarDistrito(){
-        
+    public void eliminarDistrito() {
+        String idDistritoIngresada;
         boolean distritoEncontrado = false;
-        String idDistritoIngresado;
-        System.out.println("Ingrese el id del distrito a eliminar : ");idDistritoIngresado = scanner.nextLine();
         List<String> distritos = new ArrayList<>();
         
-        try (BufferedReader archivoDistritos = new BufferedReader( new FileReader("distritos.txt") )){
+        listarDistritos();
+        System.out.print("\nIngrese el ID del distrito a eliminar: ");
+        idDistritoIngresada = scanner.nextLine();
+        
+        try (BufferedReader archivoDistritos = new BufferedReader(new FileReader(archivoDistrito))) {
             String line;
-            while((line = archivoDistritos.readLine()) != null){
+
+            while ((line = archivoDistritos.readLine()) != null) {
                 String[] datos = line.split("><");
-                String idDistritosGuardado = datos[0];
-                String nombreDistritoGuardado = datos[1];
-                if(idDistritosGuardado.equals(idDistritoIngresado) ){
-                    distritoEncontrado = true; 
-                }
-                else {
+                String idDistritoGuardado = datos[0];
+
+                if (idDistritoGuardado.equals(idDistritoIngresada)) {
+                    distritoEncontrado = true;
+                } else {
                     distritos.add(line);
                 }
-                
             }
-          
+        } catch (IOException e) {
+            System.out.println("Ocurrió un error al leer los distritos.");
+            utilidades.pausa();
         }
-        catch(IOException e){
-            System.out.println("Ocurrio un error al iniciar leer el mensaje" );
-        }
-        if(distritoEncontrado){
-            try(BufferedWriter archivoDistritos = new BufferedWriter(new FileWriter("distritos.txt"))){
-                for(String distrito : distritos){
-                archivoDistritos.write(distrito);
-                archivoDistritos.newLine();
+        
+        if (distritoEncontrado) {
+            try (BufferedWriter archivoDistritos = new BufferedWriter(new FileWriter(archivoDistrito))) {
+                for (String distrito : distritos) {
+                    archivoDistritos.write(distrito);
+                    archivoDistritos.newLine();
                 }
-                System.out.println("El distrito se elimino correctamente");
+
+                System.out.println("El distrito ha sido eliminado correctamente.");
+                utilidades.pausa();
+            } catch (IOException e) {
+                System.out.println("Ocurrió un error al eliminar el distrito.");
+                utilidades.pausa();
             }
-            catch(IOException e){
-                System.out.println("Ocurrio un error al eliminar el distrito." );
-            }
-            
+        } else {
+            System.out.println("No se encontró un distrito con el ID proporcionado.");
+            utilidades.pausa();
         }
-         else {
-            System.out.println("No se encontro el distrito con el ID proporcionado.");
-        }
-        
-    }
-    
-    public void eliminarDistritoPorCiudad(String idCiudades){
-        
-        boolean distritoEncontrado = false;
-        
-        
-        List<String> distritos = new ArrayList<>();
-         
-        try (BufferedReader archivoDistritos = new BufferedReader( new FileReader("distritos.txt") )){
-            String line;
-            while((line = archivoDistritos.readLine()) != null){
-                String[] datos = line.split("><");
-                String idCiudadGuardada = datos[1];
-                
-                if(idCiudadGuardada.equals(idCiudades) ){
-                    distritoEncontrado = true; 
-                }
-                else {
-                    distritos.add(line);
-                }
-                
-            }
-          
-        }
-        catch(IOException e){
-            System.out.println("Ocurrio un error al iniciar leer el mensaje" );
-        }
-        if(distritoEncontrado){
-            try(BufferedWriter archivoDistritos = new BufferedWriter(new FileWriter("distritos.txt"))){
-                for(String distrito : distritos){
-                archivoDistritos.write(distrito);
-                archivoDistritos.newLine();
-                }
-                
-            }
-            catch(IOException e){
-                System.out.println("Ocurrio un error al eliminar el distrito." );
-            }
-            
-        }
-         else {
-            System.out.println("No se encontro el distrito con el ID proporcionado.");
-        }
-        
     }
 
+    public void menuDistrito() {
+        utilidades.verificarArchivo(archivoDistrito);
+
+        int opcion = -1;
+
+        do {
+            utilidades.limpiarPantalla();
+            System.out.println("\n------------------- MENÚ DISTRITO -------------------");
+            System.out.println("1.\tRegistrar distrito");
+            System.out.println("2.\tListar distritos");
+            System.out.println("3.\tActualizar distrito");
+            System.out.println("4.\tEliminar distrito");
+            System.out.println("\n0.\tSalir");
+
+            try {
+                System.out.print("\nDigite su opción: ");
+                opcion = scanner.nextInt();
+                scanner.nextLine();
+                
+                switch (opcion){
+                    case 0 -> {
+                        utilidades.limpiarPantalla();
+                        System.out.println("Saliendo del menú...");
+                    }
+                    case 1 -> {
+                        utilidades.limpiarPantalla();
+                        registrarDistrito();
+                    }
+                    case 2 -> {
+                        utilidades.limpiarPantalla();
+                        listarDistritos();
+                        utilidades.pausa();
+                    }
+                    case 3 -> {
+                        utilidades.limpiarPantalla();
+                        actualizarDistrito();
+                        
+                    }
+                    case 4 -> {
+                        utilidades.limpiarPantalla();
+                        eliminarDistrito();
+                    }
+                    default -> {
+                        System.out.println("Entrada no válida. Por favor, ingrese una de las opciones.");
+                        utilidades.pausa();
+                        scanner.nextLine();
+                    }
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Entrada no válida. Por favor, ingrese una de las opciones.");
+                utilidades.pausa();
+                scanner.nextLine();
+            }
+        } while (opcion != 0);
+    }
+
+    // Getters y setters
     public int getIdDistrito() {
         return idDistrito;
     }
 
     public void setIdDistrito(int idDistrito) {
         this.idDistrito = idDistrito;
-    }
-
-    public String getNombreDistrito() {
-        return nombreDistrito;
-    }
-
-    public void setNombreDistrito(String nombreDistrito) {
-        this.nombreDistrito = nombreDistrito;
     }
 
     public int getIdCiudad() {
@@ -273,7 +310,12 @@ public class  Distrito {
     public void setIdCiudad(int idCiudad) {
         this.idCiudad = idCiudad;
     }
-    
-    
-}
 
+    public String getNombreDistrito() {
+        return nombreDistrito;
+    }
+
+    public void setNombreDistrito(String nombreDistrito) {
+        this.nombreDistrito = nombreDistrito;
+    }
+}

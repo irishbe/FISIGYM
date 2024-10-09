@@ -1,217 +1,288 @@
-
 package fisigym.clases;
 
-import java.io.BufferedWriter;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileWriter;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Scanner;
 
 public class Ciudad {
-    private Distrito distrito = new Distrito();
     private int idCiudad;
     private String nombreCiudad;
     
-    final Scanner scanner = new Scanner(System.in);
-    //contructor 
-    public Ciudad(int idCiudad, String nombreCiudad){
-        
+    private final Scanner scanner = new Scanner(System.in);
+    private final String archivoCiudad = "ciudades.txt";
+    private final Utilidades utilidades = new Utilidades();
+    
+    // Constructor
+    public Ciudad(int idCiudad, String nombreCiudad) {
         this.idCiudad = idCiudad;
         this.nombreCiudad = nombreCiudad;
-        
     }
 
     public Ciudad() {
-        
     }
     
-    
+    // Método toString para formatear el guardado en archivo
     @Override
     public String toString() {
-        return  idCiudad + "><" + nombreCiudad;
+        return idCiudad + "><" + nombreCiudad;
     }
     
-    public void registrarCiudad(){
-        int opcion=0;
-        System.out.println("\n------------------- REGISTRAR CIUDAD -------------------");
-        System.out.print("Nombre de ciudad:  "); nombreCiudad  = scanner.nextLine();
-        idCiudad = (int)(Math.random() * 1000);
-        scanner.nextLine();
-        System.out.println("---------------------------------------------------------");
-        do{
-            distrito.registrarDistrito(idCiudad);
-            System.out.print("Desea ingresar otro distrito? ( si = 1/ no = 0) : "); opcion = scanner.nextInt();
-        }while(opcion == 1 );
-       
-         
-        this.guardarCiudad();
-        this.guardarIdsEnArchivo();
-        
-    }
-    
-    public void guardarIdsEnArchivo() {
-    
-    File archivoIds = new File("ids_ciudades.txt");
-    try (BufferedReader archivoCiudades = new BufferedReader(new FileReader("ciudades.txt"));
-         BufferedWriter archivoIdsWriter = new BufferedWriter(new FileWriter(archivoIds))) {
+    // Método para generar un ID único que sea ascendente
+    public int generarIdUnico() {
+        List<Integer> idsExistentes = obtenerIdsExistentes();
+        int nuevoId = 1; // Comenzar desde 1 o el próximo número disponible
 
-        String line;
-        while ((line = archivoCiudades.readLine()) != null) {
+        if (!idsExistentes.isEmpty()) {
+            // Encuentra el ID más alto
+            int idMaximo = idsExistentes.stream().max(Integer::compare).orElse(0);
+            nuevoId = idMaximo + 1; // Comenzar desde el siguiente número
             
-            String[] datos = line.split("><");
-            String idCiudadGuardada = datos[0]; 
-
-            
-            archivoIdsWriter.write(idCiudadGuardada);
-            archivoIdsWriter.newLine(); 
-
-          
-            
+            // Verificar si el nuevo ID ya existe y seguir sumando hasta encontrar uno único
+            while (idsExistentes.contains(nuevoId)) {
+                nuevoId++;
+            }
         }
 
-        
-
-    } catch (IOException e) {
-        System.out.println("Ocurrio un error al leer/escribir los archivos");
+        return nuevoId;
     }
-}
 
-    public void guardarCiudad(){
-        var utilidades = new Utilidades();
+    // Método para obtener todos los IDs de ciudades almacenadas en el archivo
+    public List<Integer> obtenerIdsExistentes() {
+        List<Integer> idsExistentes = new ArrayList<>();
         
-        try (BufferedWriter archivoCiudades = new BufferedWriter(new FileWriter("ciudades.txt", true))) {
-            
+        try (BufferedReader archivoCiudades = new BufferedReader(new FileReader(archivoCiudad))) {
+            String line;
+            while ((line = archivoCiudades.readLine()) != null) {
+                String[] datos = line.split("><");
+                int idCiudadGuardada = Integer.parseInt(datos[0]);
+                idsExistentes.add(idCiudadGuardada);
+            }
+        } catch (IOException e) {
+            System.out.println("Ocurrió un error al leer los IDs existentes.");
+        }
+        
+        return idsExistentes;
+    }
+
+    public void registrarCiudad() {
+        System.out.println("\n------------------- REGISTRAR CIUDAD -------------------");
+        System.out.print("Nombre de ciudad: ");
+        nombreCiudad = scanner.nextLine().trim();
+
+        if (nombreCiudad.isEmpty()) {
+            System.out.println("El nombre de la ciudad no puede estar vacío.");
+            utilidades.pausa();
+            return;
+        }
+    
+        // Generar un ID único
+        idCiudad = generarIdUnico();
+        System.out.println("ID de la ciudad: " + idCiudad);
+        System.out.println("---------------------------------------------------------");
+        
+        this.guardarCiudad();
+    }
+    
+    public void guardarCiudad() {    
+        try (BufferedWriter archivoCiudades = new BufferedWriter(new FileWriter(archivoCiudad, true))) {
             archivoCiudades.write(this.toString());
             archivoCiudades.newLine();
-            
-            utilidades.limpiarPantalla();
-            System.out.println("\n¡Ciudad registrado con exito!");
+            System.out.println("\n¡Ciudad registrada con éxito!");
             utilidades.pausa();
-            
         } catch (IOException e) {
-            System.out.println("Ocurrió un error al registrar la ciudad" );
+            System.out.println("Ocurrió un error al registrar la ciudad.");
+            utilidades.pausa();
         }
     }
     
-    public void leerCiudades(){
-        try (BufferedReader archivoCiudades = new BufferedReader( new FileReader("ciudades.txt") )){
+    public void listarCiudades() {
+        System.out.println("\n------------------- LISTA DE CIUDADES -------------------");
+        
+        try (BufferedReader archivoCiudades = new BufferedReader(new FileReader(archivoCiudad))) {
             String line;
-            while((line = archivoCiudades.readLine()) != null){
-                String[] datos = line.split("><");
-                String idCiudadGuardada = datos[0];
-                String nombreCiudadGuardada = datos[1];
-                System.out.println("id: "+ idCiudadGuardada + "  " + "Nombre : "+ nombreCiudadGuardada);
-            }
-          
-        }
-        catch(IOException e){
-            System.out.println("Ocurrio un error al leer"  );
-        }
-        
-    }
-    
-    public void actualizarCiudad(){
-        
-        boolean ciudadEncontrada= false;
-        String nuevoNombreCiudad;
-        String idCiudadIngresada;
-        
-        System.out.print("Ingrese el id de la ciudad : ");idCiudadIngresada =scanner.nextLine();
-        
-        List<String> ciudades = new ArrayList<>();
-        
-        try (BufferedReader archivoCiudades = new BufferedReader( new FileReader("ciudades.txt") )){
-            String line;
-            while((line = archivoCiudades.readLine()) != null){
-                String[] datos = line.split("><");
-                String idCiudadGuardada = datos[0];
-                String nombreCiudadGuardada = datos[1];
-                if(idCiudadGuardada.equals(idCiudadIngresada) ){
-                    System.out.println("Ingrese el nuevo nombre de la ciudad  : ");nuevoNombreCiudad = scanner.nextLine();
-                    ciudades.add(idCiudadGuardada + "><" + nuevoNombreCiudad);
-                    ciudadEncontrada = true; 
-                }
-                else {
-                    ciudades.add(line);
-                }
-                
-            }
-          
-        }
-        catch(IOException e){
-            System.out.println("Ocurrio un error al iniciar leer el mensaje" );
-        }
-        
-        if(ciudadEncontrada){
-            try(BufferedWriter archivoCiudades = new BufferedWriter(new FileWriter("ciudades.txt"))){
-                for (String ciudad : ciudades) {
-                archivoCiudades.write(ciudad);
-                archivoCiudades.newLine(); 
-            }
-            System.out.println("La ciudad ha sido actualizada exitosamente.");
-        } catch (IOException e) {
-            System.out.println("Ocurrio un error al actualizar la ciudad.");
-            }
-            
-        }
-        else {
-            System.out.println("No se encontro una ciudad con el ID proporcionado.");
-        }
-    }
-    
-    public void eliminarCiudad(){
-        
-        boolean ciudadEncontrada = false;
-        String idCiudadIngresada;
-        System.out.println("Ingrese el id de la ciudad a eliminar : ");idCiudadIngresada = scanner.nextLine();
-        List<String> ciudades = new ArrayList<>();
-        
-        try (BufferedReader archivoCiudades = new BufferedReader( new FileReader("ciudades.txt") )){
-            String line;
-            while((line = archivoCiudades.readLine()) != null){
-                String[] datos = line.split("><");
-                String idCiudadGuardada = datos[0];
-                String nombreCiudadGuardada = datos[1];
-                if(idCiudadGuardada.equals(idCiudadIngresada) ){
-                    ciudadEncontrada = true; 
-                }
-                else {
-                    ciudades.add(line);
-                }
-                
-            }
-          
-        }
-        catch(IOException e){
-            System.out.println("Ocurrio un error al iniciar leer el mensaje" );
-        }
-        if(ciudadEncontrada){
-            try(BufferedWriter archivoCiudades = new BufferedWriter(new FileWriter("ciudades.txt"))){
-                for(String ciudad : ciudades){
-                archivoCiudades.write(ciudad);
-                archivoCiudades.newLine();
-                }
-                System.out.println("La ciudad se elimino correctamente");
-            }
-            catch(IOException e){
-                System.out.println("Ocurrio un error al eliminar la ciudad.\n" + e.getMessage());
-            }
-            
-        }
-         else {
-            System.out.println("No se encontro una ciudad con el ID proporcionado.");
-        }
-        
-        
-        distrito.eliminarDistritoPorCiudad(idCiudadIngresada);
-    }
-    
-    
+            boolean hayCiudades = false;
 
+            System.out.println("\tID"+ "\tNombres");
+
+            while ((line = archivoCiudades.readLine()) != null) {
+                String[] datos = line.split("><");
+                System.out.println("\t" + datos[0] + "\t" + datos[1]);
+                hayCiudades = true;
+            }
+
+            if (!hayCiudades) {
+                System.out.println("No hay ciudades registradas.");
+            }
+        } catch (IOException e) {
+            System.out.println("Ocurrió un error al leer las ciudades.");
+            utilidades.pausa();
+        }
+    }
+    
+    public void actualizarCiudad() {
+        String idCiudadIngresada;
+        boolean ciudadEncontrada = false;
+        String nuevoNombreCiudad;
+        List<String> ciudades = new ArrayList<>();
+
+        listarCiudades();
+        System.out.print("\nIngrese el ID de la ciudad a actualizar: ");
+        idCiudadIngresada = scanner.nextLine();
+        
+        try (BufferedReader archivoCiudades = new BufferedReader(new FileReader(archivoCiudad))) {
+            String line;
+
+            while ((line = archivoCiudades.readLine()) != null) {
+                String[] datos = line.split("><");
+                String idCiudadGuardada = datos[0];
+
+                if (idCiudadGuardada.equals(idCiudadIngresada)) {
+                    System.out.print("\nIngrese el nuevo nombre de la ciudad: ");
+                    nuevoNombreCiudad = scanner.nextLine();
+
+                    if (nuevoNombreCiudad.isEmpty()) {
+                        System.out.println("El nombre no puede estar vacío.");
+                        utilidades.pausa();
+                        return;
+                    }
+
+                    ciudades.add(idCiudadGuardada + "><" + nuevoNombreCiudad);
+                    ciudadEncontrada = true;
+                } else {
+                    ciudades.add(line);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Ocurrió un error al leer las ciudades.");
+            utilidades.pausa();
+        }
+        
+        if (ciudadEncontrada) {
+            try (BufferedWriter archivoCiudades = new BufferedWriter(new FileWriter(archivoCiudad))) {
+                for (String ciudad : ciudades) {
+                    archivoCiudades.write(ciudad);
+                    archivoCiudades.newLine();
+                }
+
+                System.out.println("La ciudad ha sido actualizada exitosamente.");
+                utilidades.pausa();
+
+            } catch (IOException e) {
+                System.out.println("Ocurrió un error al actualizar la ciudad.");
+                utilidades.pausa();
+            }
+        } else {
+            System.out.println("No se encontró una ciudad con el ID proporcionado.");
+            utilidades.pausa();
+        }
+    }
+    
+    public void eliminarCiudad() {
+        String idCiudadIngresada;
+        boolean ciudadEncontrada = false;
+        List<String> ciudades = new ArrayList<>();
+        
+        listarCiudades();
+        System.out.print("\nIngrese el ID de la ciudad a eliminar: ");
+        idCiudadIngresada = scanner.nextLine();
+        
+        try (BufferedReader archivoCiudades = new BufferedReader(new FileReader(archivoCiudad))) {
+            String line;
+
+            while ((line = archivoCiudades.readLine()) != null) {
+                String[] datos = line.split("><");
+                String idCiudadGuardada = datos[0];
+
+                if (idCiudadGuardada.equals(idCiudadIngresada)) {
+                    ciudadEncontrada = true;
+                } else {
+                    ciudades.add(line);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Ocurrió un error al leer las ciudades.");
+            utilidades.pausa();
+        }
+        
+        if (ciudadEncontrada) {
+            try (BufferedWriter archivoCiudades = new BufferedWriter(new FileWriter(archivoCiudad))) {
+                for (String ciudad : ciudades) {
+                    archivoCiudades.write(ciudad);
+                    archivoCiudades.newLine();
+                }
+
+                System.out.println("La ciudad ha sido eliminada correctamente.");
+            } catch (IOException e) {
+                System.out.println("Ocurrió un error al eliminar la ciudad.");
+            }
+        } else {
+            System.out.println("No se encontró una ciudad con el ID proporcionado.");
+        }
+    }
+
+    public void menuCiudad() {
+        utilidades.verificarArchivo(archivoCiudad);
+
+        int opcion = -1;
+
+        do {
+            utilidades.limpiarPantalla();
+            System.out.println("\n------------------- MENÚ CIUDAD -------------------");
+            System.out.println("1.\tRegistrar ciudad");
+            System.out.println("2.\tListar ciudades");
+            System.out.println("3.\tActualizar ciudad");
+            System.out.println("4.\tEliminar ciudad");
+            System.out.println("\n0.\tSalir");
+
+            try {
+                System.out.print("\nDigite su opción: ");
+                opcion = scanner.nextInt();
+                scanner.nextLine();
+                
+                switch (opcion){
+                    case 0 -> {
+                        utilidades.limpiarPantalla();
+                        System.out.println("Saliendo del menú...");
+                    }
+                    case 1 -> {
+                        utilidades.limpiarPantalla();
+                        registrarCiudad();
+                    }
+                    case 2 -> {
+                        utilidades.limpiarPantalla();
+                        listarCiudades();
+                        utilidades.pausa();
+                    }
+                    case 3 -> {
+                        utilidades.limpiarPantalla();
+                        actualizarCiudad();
+                        
+                    }
+                    case 4 -> {
+                        utilidades.limpiarPantalla();
+                        eliminarCiudad();
+                    }
+                    default -> {
+                        System.out.println("Entrada no válida. Por favor, ingrese una de las opciones.");
+                        utilidades.pausa();
+                        scanner.nextLine();
+                    }
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Entrada no válida. Por favor, ingrese una de las opciones.");
+                utilidades.pausa();
+                scanner.nextLine();
+            }
+        } while (opcion != 0);
+    }
+
+    // Getters y setters
     public int getIdCiudad() {
         return idCiudad;
     }
@@ -227,6 +298,4 @@ public class Ciudad {
     public void setNombreCiudad(String nombreCiudad) {
         this.nombreCiudad = nombreCiudad;
     }
-    
 }
-

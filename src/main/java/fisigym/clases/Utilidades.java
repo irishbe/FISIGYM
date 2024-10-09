@@ -1,5 +1,7 @@
 package fisigym.clases;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -52,5 +54,18 @@ public class Utilidades {
         } while(opcion!=0 && opcion!=1);
         
         return false;
+    }
+
+    public void verificarArchivo(String nombreArchivo) {
+        File archivo = new File(nombreArchivo);
+    
+        if (!archivo.exists()) { 
+            try {
+                archivo.createNewFile();
+            } catch (IOException e) {
+                System.out.println("Ocurrió un error al crear el archivo " + nombreArchivo);
+                pausa();
+            }
+        }
     }
 }
