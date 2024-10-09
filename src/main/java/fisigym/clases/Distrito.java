@@ -76,6 +76,12 @@ public class Distrito {
         // Seleccionar ciudad existente
         Ciudad ciudad = new Ciudad();
         ciudad.listarCiudades();
+
+        if (utilidades.verificarArchivoConContenido("ciudades.txt") == false) {
+            System.out.println("Primero registre una ciudad en el menú de gestor de ciudades.");
+            utilidades.pausa();
+            return;
+        }
         
         System.out.print("ID de la ciudad: ");
         idCiudad = Integer.parseInt(scanner.nextLine().trim());
@@ -126,11 +132,11 @@ public class Distrito {
 
             if (!hayDistritos) {
                 System.out.println("No hay distritos registrados.");
-                utilidades.pausa();
+                //utilidades.pausa(); no poner pausa en método listar
             }
         } catch (IOException e) {
             System.out.println("Ocurrió un error al leer los distritos.");
-            utilidades.pausa();
+            //utilidades.pausa(); no poner pausa en método listar
         }
     }
     
@@ -141,6 +147,13 @@ public class Distrito {
         List<String> distritos = new ArrayList<>();
 
         listarDistritos();
+
+        if (utilidades.verificarArchivoConContenido(archivoDistrito) == false) {
+            System.out.println("Primero registre un distrito en el menú.");
+            utilidades.pausa();
+            return;
+        }
+
         System.out.print("\nIngrese el ID del distrito a actualizar: ");
         idDistritoIngresada = scanner.nextLine();
         
@@ -198,6 +211,13 @@ public class Distrito {
         List<String> distritos = new ArrayList<>();
         
         listarDistritos();
+
+        if (utilidades.verificarArchivoConContenido(archivoDistrito) == false) {
+            System.out.println("Primero registre un distrito en el menú.");
+            utilidades.pausa();
+            return;
+        }
+
         System.out.print("\nIngrese el ID del distrito a eliminar: ");
         idDistritoIngresada = scanner.nextLine();
         

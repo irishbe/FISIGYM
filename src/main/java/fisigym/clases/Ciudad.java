@@ -118,10 +118,11 @@ public class Ciudad {
 
             if (!hayCiudades) {
                 System.out.println("No hay ciudades registradas.");
+                //utilidades.pausa(); no poner pausa en método listar
             }
         } catch (IOException e) {
             System.out.println("Ocurrió un error al leer las ciudades.");
-            utilidades.pausa();
+            //utilidades.pausa(); no poner pausa en método listar
         }
     }
     
@@ -132,6 +133,13 @@ public class Ciudad {
         List<String> ciudades = new ArrayList<>();
 
         listarCiudades();
+        
+        if (utilidades.verificarArchivoConContenido(archivoCiudad) == false) {
+            System.out.println("Primero registre una ciudad en el menú.");
+            utilidades.pausa();
+            return;
+        }
+
         System.out.print("\nIngrese el ID de la ciudad a actualizar: ");
         idCiudadIngresada = scanner.nextLine();
         
@@ -189,6 +197,13 @@ public class Ciudad {
         List<String> ciudades = new ArrayList<>();
         
         listarCiudades();
+
+        if (utilidades.verificarArchivoConContenido(archivoCiudad) == false) {
+            System.out.println("Primero registre una ciudad en el menú.");
+            utilidades.pausa();
+            return;
+        }
+
         System.out.print("\nIngrese el ID de la ciudad a eliminar: ");
         idCiudadIngresada = scanner.nextLine();
         

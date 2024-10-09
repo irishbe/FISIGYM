@@ -1,6 +1,8 @@
 package fisigym.clases;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -67,5 +69,18 @@ public class Utilidades {
                 pausa();
             }
         }
+    }
+
+    public boolean verificarArchivoConContenido(String nombreArchivo) {
+        try (BufferedReader br = new BufferedReader(new FileReader(nombreArchivo))) {
+
+            if (br.readLine() != null) {
+                return true;
+            }
+        } catch (IOException e) {
+            System.out.println("Ocurrió un error al intentar leer el archivo: " + nombreArchivo);
+            pausa();
+        }
+        return false;
     }
 }
