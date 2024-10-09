@@ -33,8 +33,8 @@ public class Ciudad {
         return idCiudad + "><" + nombreCiudad;
     }
     
-    // Método para generar un ID único que sea ascendente
-    public int generarIdUnico() {
+    // Método para generar un ID único que sea ascendente yap
+    private int generarIdUnico() {
         List<Integer> idsExistentes = obtenerIdsExistentes();
         int nuevoId = 1; // Comenzar desde 1 o el próximo número disponible
 
@@ -53,7 +53,7 @@ public class Ciudad {
     }
 
     // Método para obtener todos los IDs de ciudades almacenadas en el archivo
-    public List<Integer> obtenerIdsExistentes() {
+    private List<Integer> obtenerIdsExistentes() {
         List<Integer> idsExistentes = new ArrayList<>();
         
         try (BufferedReader archivoCiudades = new BufferedReader(new FileReader(archivoCiudad))) {
@@ -89,7 +89,7 @@ public class Ciudad {
         this.guardarCiudad();
     }
     
-    public void guardarCiudad() {    
+    private void guardarCiudad() {    
         try (BufferedWriter archivoCiudades = new BufferedWriter(new FileWriter(archivoCiudad, true))) {
             archivoCiudades.write(this.toString());
             archivoCiudades.newLine();
@@ -282,7 +282,7 @@ public class Ciudad {
         } while (opcion != 0);
     }
 
-    // Getters y setters
+    //Getters y Setters
     public int getIdCiudad() {
         return idCiudad;
     }
@@ -297,5 +297,17 @@ public class Ciudad {
 
     public void setNombreCiudad(String nombreCiudad) {
         this.nombreCiudad = nombreCiudad;
+    }
+
+    public Scanner getScanner() {
+        return scanner;
+    }
+
+    public String getArchivoCiudad() {
+        return archivoCiudad;
+    }
+
+    public Utilidades getUtilidades() {
+        return utilidades;
     }
 }

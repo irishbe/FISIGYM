@@ -36,7 +36,7 @@ public class Distrito {
     }
     
     // Método para generar un ID único para distritos
-    public int generarIdUnico() {
+    private int generarIdUnico() {
         List<Integer> idsExistentes = obtenerIdsExistentes();
         int nuevoId = 1;
 
@@ -53,7 +53,7 @@ public class Distrito {
     }
 
     // Método para obtener todos los IDs de distritos almacenados en el archivo
-    public List<Integer> obtenerIdsExistentes() {
+    private List<Integer> obtenerIdsExistentes() {
         List<Integer> idsExistentes = new ArrayList<>();
         
         try (BufferedReader archivoDistritos = new BufferedReader(new FileReader(archivoDistrito))) {
@@ -97,7 +97,7 @@ public class Distrito {
         this.guardarDistrito();
     }
     
-    public void guardarDistrito() {    
+    private void guardarDistrito() {    
         try (BufferedWriter archivoDistritos = new BufferedWriter(new FileWriter(archivoDistrito, true))) {
             archivoDistritos.write(this.toString());
             archivoDistritos.newLine();
@@ -294,7 +294,7 @@ public class Distrito {
         } while (opcion != 0);
     }
 
-    // Getters y setters
+    //Getters y Setters
     public int getIdDistrito() {
         return idDistrito;
     }
@@ -317,5 +317,17 @@ public class Distrito {
 
     public void setNombreDistrito(String nombreDistrito) {
         this.nombreDistrito = nombreDistrito;
+    }
+
+    public Scanner getScanner() {
+        return scanner;
+    }
+
+    public String getArchivoDistrito() {
+        return archivoDistrito;
+    }
+
+    public Utilidades getUtilidades() {
+        return utilidades;
     }
 }
