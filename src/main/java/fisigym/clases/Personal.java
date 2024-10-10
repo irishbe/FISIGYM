@@ -74,16 +74,22 @@ public class Personal extends Usuario {
 
     public void menuAdministrador() {
         var utilidades = new Utilidades();
+        var ciudad = new Ciudad();
+        var distrito = new Distrito();
+        var gimnasio = new Gimnasio();
+
         int opcion = -1;
 
         do {
             utilidades.limpiarPantalla();
             System.out.println("\n------------------- MENÚ DE ADMINISTRADOR -------------------");
-            System.out.println("\n1.\tGestionar gimnasios");
-            System.out.println("2.\tGestionar profesores");
-            System.out.println("3.\tGestionar entrenadores");
-            System.out.println("4.\tGestionar clases");
-            System.out.println("5.\tRegistrar membresía");
+            System.out.println("\n1.\tGestionar sedes (ciudad)");
+            System.out.println("2.\tGestionar sedes (distritos)");
+            System.out.println("3.\tGestionar gimnasios");
+            System.out.println("4.\tGestionar profesores");
+            System.out.println("5.\tGestionar entrenadores");
+            System.out.println("6.\tGestionar clases");
+            System.out.println("7.\tRegistrar membresía");
             System.out.println("\n0.\tCerrar sesión");
 
             try {
@@ -98,25 +104,35 @@ public class Personal extends Usuario {
                     }
                     case 1 -> {
                         utilidades.limpiarPantalla();
-                        System.out.println("Gestionando gimnasios...");
+                        ciudad.menuCiudad();
                         utilidades.pausa();
                     }
                     case 2 -> {
                         utilidades.limpiarPantalla();
-                        System.out.println("Gestionando profesores...");
+                        distrito.menuDistrito();
                         utilidades.pausa();
                     }
                     case 3 -> {
                         utilidades.limpiarPantalla();
-                        System.out.println("Gestionando entrenadores...");
+                        gimnasio.menuGimnasio();
                         utilidades.pausa();
                     }
                     case 4 -> {
                         utilidades.limpiarPantalla();
-                        System.out.println("Gestionando clases...");
+                        System.out.println("Gestionando profesores...");
                         utilidades.pausa();
                     }
                     case 5 -> {
+                        utilidades.limpiarPantalla();
+                        System.out.println("Gestionando entrenadores...");
+                        utilidades.pausa();
+                    }
+                    case 6 -> {
+                        utilidades.limpiarPantalla();
+                        System.out.println("Gestionando clases...");
+                        utilidades.pausa();
+                    }
+                    case 7 -> {
                         utilidades.limpiarPantalla();
                         System.out.println("Registrando membresía...");
                         utilidades.pausa();
