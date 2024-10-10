@@ -146,13 +146,13 @@ public class Distrito {
         String nuevoNombreDistrito;
         List<String> distritos = new ArrayList<>();
 
-        listarDistritos();
-
         if (utilidades.verificarArchivoConContenido(archivoDistrito) == false) {
             System.out.println("Primero registre un distrito en el menú.");
             utilidades.pausa();
             return;
         }
+
+        listarDistritos();
 
         System.out.print("\nIngrese el ID del distrito a actualizar: ");
         idDistritoIngresada = scanner.nextLine();
@@ -209,14 +209,14 @@ public class Distrito {
         String idDistritoIngresada;
         boolean distritoEncontrado = false;
         List<String> distritos = new ArrayList<>();
-        
-        listarDistritos();
 
         if (utilidades.verificarArchivoConContenido(archivoDistrito) == false) {
             System.out.println("Primero registre un distrito en el menú.");
             utilidades.pausa();
             return;
         }
+
+        listarDistritos();
 
         System.out.print("\nIngrese el ID del distrito a eliminar: ");
         idDistritoIngresada = scanner.nextLine();

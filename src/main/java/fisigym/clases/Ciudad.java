@@ -41,7 +41,7 @@ public class Ciudad {
         if (!idsExistentes.isEmpty()) {
             // Encuentra el ID más alto
             int idMaximo = idsExistentes.stream().max(Integer::compare).orElse(0);
-            nuevoId = idMaximo + 1; // Comenzar desde el siguiente número
+            nuevoId = idMaximo + 1;
             
             // Verificar si el nuevo ID ya existe y seguir sumando hasta encontrar uno único
             while (idsExistentes.contains(nuevoId)) {
@@ -102,6 +102,7 @@ public class Ciudad {
     }
     
     public void listarCiudades() {
+
         System.out.println("\n------------------- LISTA DE CIUDADES -------------------");
         
         try (BufferedReader archivoCiudades = new BufferedReader(new FileReader(archivoCiudad))) {
@@ -131,14 +132,14 @@ public class Ciudad {
         boolean ciudadEncontrada = false;
         String nuevoNombreCiudad;
         List<String> ciudades = new ArrayList<>();
-
-        listarCiudades();
         
         if (utilidades.verificarArchivoConContenido(archivoCiudad) == false) {
             System.out.println("Primero registre una ciudad en el menú.");
             utilidades.pausa();
             return;
         }
+
+        listarCiudades();
 
         System.out.print("\nIngrese el ID de la ciudad a actualizar: ");
         idCiudadIngresada = scanner.nextLine();
@@ -195,14 +196,14 @@ public class Ciudad {
         String idCiudadIngresada;
         boolean ciudadEncontrada = false;
         List<String> ciudades = new ArrayList<>();
-        
-        listarCiudades();
 
         if (utilidades.verificarArchivoConContenido(archivoCiudad) == false) {
             System.out.println("Primero registre una ciudad en el menú.");
             utilidades.pausa();
             return;
         }
+
+        listarCiudades();
 
         System.out.print("\nIngrese el ID de la ciudad a eliminar: ");
         idCiudadIngresada = scanner.nextLine();
