@@ -114,7 +114,7 @@ public class Personal extends Usuario {
                     }
                     case 3 -> {
                         utilidades.limpiarPantalla();
-                        gimnasio.menuGimnasio();
+                        gimnasio.menuGimnasio(); // Llamada al menú de gimnasio
                         utilidades.pausa();
                     }
                     case 4 -> {
