@@ -302,10 +302,15 @@ public class Gimnasio {
         
         // PEDIR EL ID DE UN DISTRITO VÁLIDO
         utilidades.limpiarPantalla();
-        distrito.listarDistritosPorCiudad(idCiudad);
+        if (distrito.listarDistritosPorCiudad(idCiudad) == false){
+            utilidades.pausa();
+            return;
+        }
+        
         System.out.println("\n------------------- REGISTRAR GIMNASIO -------------------");
         System.out.println("                 Presione 0 para regresar                 ");
-        idDistrito = utilidades.solicitarId("distritos.txt", "Ingrese el ID del distrito: ");
+        idDistrito = utilidades.solicitarRelacionId("distritos.txt", idCiudad, "Ingrese el ID del distrito: ");
+        //idDistrito = utilidades.solicitarId("distritos.txt", "Ingrese el ID del distrito: ");
         
         if (idDistrito == 0){
             return;

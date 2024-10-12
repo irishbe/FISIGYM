@@ -146,12 +146,13 @@ public class Distrito {
         }
     }
 
-    public void listarDistritosPorCiudad(int idCiudad){
+    public boolean  listarDistritosPorCiudad(int idCiudad){
+        boolean hayDistritos = false;
+
         System.out.println("\n------------------- LISTA DE DISTRITOS -------------------");
 
         try (BufferedReader archivoDistritos = new BufferedReader(new FileReader(archivoDistrito))){
             String line;
-            boolean hayDistritos = false;
 
             System.out.println("\tID Distrito\tNombres");
             
@@ -180,6 +181,8 @@ public class Distrito {
         } catch(NumberFormatException e){
             System.out.println("Error al convertir los IDs. Asegúrate de que el formato es correcto.");
         }
+
+        return hayDistritos;
     }
 
     public String obtenerNombreDistrito(int idDistrito) {

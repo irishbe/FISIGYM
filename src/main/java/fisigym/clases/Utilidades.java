@@ -137,4 +137,60 @@ public class Utilidades {
 
         return idIngresado;
     }
+
+    private boolean verificarRelacionId(int idPrincipal, int idSecundario, String archivo) {
+        try (BufferedReader archivoReader = new BufferedReader(new FileReader(archivo))) {
+            String line;
+    
+            while ((line = archivoReader.readLine()) != null) {
+                String[] datos = line.split("><");
+                int idGuardadoPrincipal = Integer.parseInt(datos[0]);
+                int idGuardadoSecundario = Integer.parseInt(datos[1]);
+    
+                if (idGuardadoPrincipal == idPrincipal && idGuardadoSecundario == idSecundario) {
+                    return true;
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Ocurrió un error al leer el archivo.");
+        } catch (NumberFormatException e) {
+            System.out.println("Error al convertir los IDs. Asegúrate de que el formato es correcto.");
+        }
+    
+        return false;
+    }
+
+    public int solicitarRelacionId(String archivo, int idSecundario, String mensajePrincipal) {
+        int idPrincipal = -1;
+        boolean existeRelacion = false;
+    
+        while (!existeRelacion && (idPrincipal != 0 || idSecundario != 0)) {
+            try {
+                // Solicitar el ID principal
+                System.out.print("\n" + mensajePrincipal);
+                idPrincipal = scanner.nextInt();
+                scanner.nextLine();
+    
+                if (idPrincipal == 0) {
+                    limpiarPantalla();
+                    System.out.println("Regresando al menú anterior...");
+                    pausa();
+                    return 0;
+                }
+    
+                // Verificar si existe la relación entre el ID principal y el ID secundario
+                existeRelacion = verificarRelacionId(idPrincipal, idSecundario, archivo);
+    
+                if (!existeRelacion) {
+                    System.out.println("El ID " + idPrincipal + " no está asociado. Intente nuevamente.");
+                }
+    
+            } catch (InputMismatchException e) {
+                System.out.println("Por favor, ingrese un número válido.");
+                scanner.nextLine();
+            }
+        }
+    
+        return idPrincipal;
+    }
 }
