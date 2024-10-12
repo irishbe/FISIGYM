@@ -72,7 +72,6 @@ public class Distrito {
 
     public void registrarDistrito() {
         Ciudad ciudad = new Ciudad();
-        int idCiudadIngresada;
 
         if (utilidades.verificarArchivoConContenido("ciudades.txt") == false) {
             System.out.println("Primero registre una ciudad en el menú de gestor de ciudades.");
@@ -84,9 +83,9 @@ public class Distrito {
         ciudad.listarCiudades();
         System.out.println("\n------------------- REGISTRAR DISTRITO -------------------");
         System.out.println("                 Presione 0 para regresar                 ");
-        idCiudadIngresada = utilidades.solicitarId(archivoDistrito, "Ingrese el ID de la ciudad: ");
+        idCiudad = utilidades.solicitarId("ciudades.txt", "Ingrese el ID de la ciudad: ");
 
-        if (idCiudadIngresada == 0){
+        if (idCiudad == 0){
             return;
         }
         

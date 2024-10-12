@@ -146,7 +146,6 @@ public class Ciudad {
     }
     
     public void actualizarCiudad() {
-        int idCiudadIngresada;
         boolean ciudadEncontrada = false;
         String nuevoNombreCiudad;
         List<String> ciudades = new ArrayList<>();
@@ -161,9 +160,9 @@ public class Ciudad {
         listarCiudades();
         System.out.println("\n------------------- ACTUALIZAR CIUDAD -------------------");
         System.out.println("                 Presione 0 para regresar                 ");
-        idCiudadIngresada = utilidades.solicitarId(archivoCiudad, "Ingrese el ID de la ciudad a actualizar: ");
+        idCiudad = utilidades.solicitarId(archivoCiudad, "Ingrese el ID de la ciudad a actualizar: ");
 
-        if (idCiudadIngresada == 0){
+        if (idCiudad == 0){
             return;
         }
         
@@ -174,7 +173,7 @@ public class Ciudad {
                 String[] datos = line.split("><");
                 int idCiudadGuardada = Integer.parseInt(datos[0]);
 
-                if (idCiudadGuardada == idCiudadIngresada) {
+                if (idCiudadGuardada == idCiudad) {
                     System.out.print("\nIngrese el nuevo nombre de la ciudad: ");
                     nuevoNombreCiudad = scanner.nextLine();
 
@@ -215,7 +214,6 @@ public class Ciudad {
     }
     
     public void eliminarCiudad() {
-        int idCiudadIngresada;
         boolean ciudadEncontrada = false;
         List<String> ciudades = new ArrayList<>();
 
@@ -229,9 +227,9 @@ public class Ciudad {
         listarCiudades();
         System.out.println("\n------------------- ELIMINAR CIUDAD -------------------");
         System.out.println("                 Presione 0 para regresar                 ");
-        idCiudadIngresada = utilidades.solicitarId(archivoCiudad, "Ingrese el ID de la ciudad a eliminar: ");
+        idCiudad = utilidades.solicitarId(archivoCiudad, "Ingrese el ID de la ciudad a eliminar: ");
 
-        if (idCiudadIngresada == 0){
+        if (idCiudad == 0){
             return;
         }
         
@@ -242,7 +240,7 @@ public class Ciudad {
                 String[] datos = line.split("><");
                 int idCiudadGuardada = Integer.parseInt(datos[0]);
 
-                if (idCiudadGuardada == idCiudadIngresada) {
+                if (idCiudadGuardada == idCiudad) {
                     ciudadEncontrada = true;
                 } else {
                     ciudades.add(line);
