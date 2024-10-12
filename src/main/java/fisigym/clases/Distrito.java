@@ -71,10 +71,9 @@ public class Distrito {
     }
 
     public void registrarDistrito() {
-        System.out.println("\n------------------- REGISTRAR DISTRITO -------------------");
+        Ciudad ciudad = new Ciudad();
         
         // Seleccionar ciudad existente
-        Ciudad ciudad = new Ciudad();
         ciudad.listarCiudades();
 
         if (utilidades.verificarArchivoConContenido("ciudades.txt") == false) {
@@ -82,6 +81,8 @@ public class Distrito {
             utilidades.pausa();
             return;
         }
+
+        System.out.println("\n------------------- REGISTRAR DISTRITO -------------------");
         
         System.out.print("ID de la ciudad: ");
         idCiudad = Integer.parseInt(scanner.nextLine().trim());
@@ -138,6 +139,61 @@ public class Distrito {
             System.out.println("Ocurrió un error al leer los distritos.");
             //utilidades.pausa(); no poner pausa en método listar
         }
+    }
+
+    public void listarDistritosPorCiudad(int idCiudad){
+        System.out.println("\n------------------- LISTA DE DISTRITOS -------------------");
+
+        try (BufferedReader archivoDistritos = new BufferedReader(new FileReader(archivoDistrito))){
+            String line;
+            boolean hayDistritos = false;
+
+            System.out.println("\tID Distrito\tNombres");
+            
+            while ((line = archivoDistritos.readLine()) != null){
+                String[] datos = line.split("><");
+                
+                /*if (datos.length < 3) {
+                    System.out.println("Error en la siguiente línea del archivo: " + line);
+                    continue;
+                }*/
+                
+                int idDistritoGuardado = Integer.parseInt(datos[0]);
+                int idCiudadGuardada = Integer.parseInt(datos[1]);
+                
+                if (idCiudadGuardada == idCiudad){
+                    System.out.println("\t" + idDistritoGuardado + "\t\t" + datos[2]);
+                    hayDistritos = true;
+                }
+            }
+
+            if (!hayDistritos){
+                System.out.println("No hay distritos registrados para mostrar.");
+            }
+        } catch(IOException e){
+            System.out.println("Ocurrió un error al leer los distritos.");
+        } catch(NumberFormatException e){
+            System.out.println("Error al convertir los IDs. Asegúrate de que el formato es correcto.");
+        }
+    }
+
+    public String obtenerNombreDistrito(int idDistrito) {
+        try (BufferedReader archivoDistritos = new BufferedReader(new FileReader(archivoDistrito))){
+            String line;
+
+            while((line = archivoDistritos.readLine()) != null){
+                String[] datos = line.split("><");
+                int idDistritoGuardado = Integer.parseInt(datos[0]);
+
+                if (idDistritoGuardado == idDistrito){
+                    return datos[2];
+                }
+            }
+        } catch(IOException e){
+            System.out.println("Ocurrió un error al leer los distritos.");
+        }
+
+        return "Desconocido";
     }
     
     public void actualizarDistrito() {

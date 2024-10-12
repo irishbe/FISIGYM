@@ -83,4 +83,51 @@ public class Utilidades {
         }
         return false;
     }
+
+    private boolean verificarId(int id, String archivo) {
+        try (BufferedReader archivoReader = new BufferedReader(new FileReader(archivo))) {
+            String line;
+
+            while ((line = archivoReader.readLine()) != null) {
+                String[] datos = line.split("><");
+                int idGuardado = Integer.parseInt(datos[0]);
+
+                if (idGuardado == id) {
+                    return true;
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Ocurrió un error al leer el archivo.");
+        } catch (NumberFormatException e) {
+            System.out.println("Error al convertir el ID. Asegúrate de que el formato es correcto.");
+        }
+
+        return false;
+    }
+
+    public int solicitarId(String archivo) {
+        int idIngresado = -1;
+        boolean existe = false;
+
+        while (!existe && idIngresado != 0) {
+            System.out.print("Ingrese el ID: ");
+            
+            try {
+                idIngresado = scanner.nextInt();
+                scanner.nextLine();
+
+                existe = verificarId(idIngresado, archivo);
+                
+                if (!existe) {
+                    System.out.println("El ID " + idIngresado + " no existe en el archivo. Intente nuevamente.");
+                }
+
+            } catch (InputMismatchException e) {
+                System.out.println("Por favor, ingrese un número válido.");
+                scanner.nextLine();
+            }
+        }
+
+        return idIngresado;
+    }
 }

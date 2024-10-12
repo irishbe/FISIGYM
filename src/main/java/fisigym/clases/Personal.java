@@ -76,14 +76,15 @@ public class Personal extends Usuario {
         var utilidades = new Utilidades();
         var ciudad = new Ciudad();
         var distrito = new Distrito();
+        var gimnasio = new Gimnasio();
 
         int opcion = -1;
 
         do {
             utilidades.limpiarPantalla();
             System.out.println("\n------------------- MENÚ DE ADMINISTRADOR -------------------");
-            System.out.println("\n1.\tGestionar sedes (ciudad)");
-            System.out.println("2.\tGestionar sedes (distritos)");
+            System.out.println("\n1.\tGestionar ciudades");
+            System.out.println("2.\tGestionar distritos");
             System.out.println("3.\tGestionar gimnasios");
             System.out.println("4.\tGestionar profesores");
             System.out.println("5.\tGestionar entrenadores");
@@ -113,7 +114,7 @@ public class Personal extends Usuario {
                     }
                     case 3 -> {
                         utilidades.limpiarPantalla();
-                        System.out.println("Gestionando gimnasios...");
+                        gimnasio.menuGimnasio();
                         utilidades.pausa();
                     }
                     case 4 -> {

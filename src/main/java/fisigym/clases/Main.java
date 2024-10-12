@@ -47,13 +47,11 @@ public class Main {
                     case 2 -> {
                         utilidades.limpiarPantalla();
                         usuario.registrarUsuario();
-                        
                         utilidades.pausa();
                     }
                     case 3 -> {
                         utilidades.limpiarPantalla();
                         personal.iniciarSesion();
-                        
                     }
                     default -> {
                         System.out.println("Entrada no válida. Por favor, ingrese una de las opciones.");

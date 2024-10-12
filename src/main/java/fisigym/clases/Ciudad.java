@@ -27,23 +27,20 @@ public class Ciudad {
     public Ciudad() {
     }
     
-    // Método toString para formatear el guardado en archivo
     @Override
     public String toString() {
         return idCiudad + "><" + nombreCiudad;
     }
     
-    // Método para generar un ID único que sea ascendente yap
+    // Método para generar un ID único que sea ascendente
     private int generarIdUnico() {
         List<Integer> idsExistentes = obtenerIdsExistentes();
-        int nuevoId = 1; // Comenzar desde 1 o el próximo número disponible
+        int nuevoId = 1;
 
         if (!idsExistentes.isEmpty()) {
-            // Encuentra el ID más alto
             int idMaximo = idsExistentes.stream().max(Integer::compare).orElse(0);
             nuevoId = idMaximo + 1;
             
-            // Verificar si el nuevo ID ya existe y seguir sumando hasta encontrar uno único
             while (idsExistentes.contains(nuevoId)) {
                 nuevoId++;
             }
@@ -58,9 +55,11 @@ public class Ciudad {
         
         try (BufferedReader archivoCiudades = new BufferedReader(new FileReader(archivoCiudad))) {
             String line;
+
             while ((line = archivoCiudades.readLine()) != null) {
                 String[] datos = line.split("><");
                 int idCiudadGuardada = Integer.parseInt(datos[0]);
+                
                 idsExistentes.add(idCiudadGuardada);
             }
         } catch (IOException e) {
@@ -126,6 +125,25 @@ public class Ciudad {
             //utilidades.pausa(); no poner pausa en método listar
         }
     }
+
+    public String obtenerNombreCiudad(int idCiudad){
+        try (BufferedReader archivoCiudades = new BufferedReader(new FileReader(archivoCiudad))){
+            String line;
+            
+            while ((line = archivoCiudades.readLine()) != null){
+                String[] datos = line.split("><");
+                int idGuardado = Integer.parseInt(datos[0]);
+                if (idGuardado == idCiudad){
+                    return datos[1];
+                }
+            }
+
+        }catch(IOException e){
+            System.out.println("Ocurrió un error al leer las ciudades.");
+        }
+        
+        return "Desconocida";
+    }
     
     public void actualizarCiudad() {
         String idCiudadIngresada;
@@ -181,7 +199,6 @@ public class Ciudad {
 
                 System.out.println("La ciudad ha sido actualizada exitosamente.");
                 utilidades.pausa();
-
             } catch (IOException e) {
                 System.out.println("Ocurrió un error al actualizar la ciudad.");
                 utilidades.pausa();
@@ -234,11 +251,14 @@ public class Ciudad {
                 }
 
                 System.out.println("La ciudad ha sido eliminada correctamente.");
+                utilidades.pausa();
             } catch (IOException e) {
                 System.out.println("Ocurrió un error al eliminar la ciudad.");
+                utilidades.pausa();
             }
         } else {
             System.out.println("No se encontró una ciudad con el ID proporcionado.");
+            utilidades.pausa();
         }
     }
 
