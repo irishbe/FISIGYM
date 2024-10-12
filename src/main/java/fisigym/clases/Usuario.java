@@ -1,9 +1,9 @@
 package fisigym.clases;
 
-import java.io.BufferedWriter;
 import java.io.BufferedReader;
-import java.io.FileWriter;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -49,13 +49,55 @@ public class Usuario {
     }
     
     public void registrarUsuario() {
+        Utilidades utilidades = new Utilidades();
+
         System.out.println("\n------------------- REGISTRAR CUENTA -------------------");
-        System.out.print("Nombre de usuario:  "); nombreUsuario = scanner.nextLine();
+        System.out.print("Nombre de usuario:  "); nombreUsuario = scanner.nextLine().trim();
+        
+        if (nombreUsuario.isEmpty()) {
+            System.out.println("\nEl campo no puede estar vacío.");
+            utilidades.pausa();
+            return;
+        }
+
         System.out.print("Correo: "); correo  = scanner.nextLine();
-        System.out.print("Contraseña: "); contrasenia  = scanner.nextLine();
-        System.out.print("DNI:  "); dni = scanner.nextLine();
-        System.out.print("Nombres:  "); nombre = scanner.nextLine();
-        System.out.print("Apellidos:  "); apellido = scanner.nextLine();
+
+        if (nombreUsuario.isEmpty()) {
+            System.out.println("\nEl campo no puede estar vacío.");
+            utilidades.pausa();
+            return;
+        }
+
+        System.out.print("Contraseña: "); contrasenia  = scanner.nextLine().trim();
+        if (nombreUsuario.isEmpty()) {
+            System.out.println("\nEl campo no puede estar vacío.");
+            utilidades.pausa();
+            return;
+        }
+
+        System.out.print("DNI:  "); dni = scanner.nextLine().trim();
+
+        if (nombreUsuario.isEmpty()) {
+            System.out.println("\nEl campo no puede estar vacío.");
+            utilidades.pausa();
+            return;
+        }
+
+        System.out.print("Nombres:  "); nombre = scanner.nextLine().trim();
+
+        if (nombreUsuario.isEmpty()) {
+            System.out.println("\nEl campo no puede estar vacío.");
+            utilidades.pausa();
+            return;
+        }
+
+        System.out.print("Apellidos:  "); apellido = scanner.nextLine().trim();
+
+        if (nombreUsuario.isEmpty()) {
+            System.out.println("\nEl campo no puede estar vacío.");
+            utilidades.pausa();
+            return;
+        }
         System.out.println("---------------------------------------------------------");
         
         membresia.registrarMembresia(dni);

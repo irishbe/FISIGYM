@@ -72,9 +72,7 @@ public class Distrito {
 
     public void registrarDistrito() {
         Ciudad ciudad = new Ciudad();
-        
-        // Seleccionar ciudad existente
-        ciudad.listarCiudades();
+        int idCiudadIngresada;
 
         if (utilidades.verificarArchivoConContenido("ciudades.txt") == false) {
             System.out.println("Primero registre una ciudad en el menú de gestor de ciudades.");
@@ -82,12 +80,20 @@ public class Distrito {
             return;
         }
 
+        // PEDIR EL ID DE UNA CIUDAD VÁLIDA
+        ciudad.listarCiudades();
         System.out.println("\n------------------- REGISTRAR DISTRITO -------------------");
+        System.out.println("                 Presione 0 para regresar                 ");
+        idCiudadIngresada = utilidades.solicitarId(archivoDistrito, "Ingrese el ID de la ciudad: ");
+
+        if (idCiudadIngresada == 0){
+            return;
+        }
         
-        System.out.print("ID de la ciudad: ");
-        idCiudad = Integer.parseInt(scanner.nextLine().trim());
-        
-        System.out.print("Nombre de distrito: ");
+        utilidades.limpiarPantalla();
+        System.out.println("\n------------------- REGISTRAR DISTRITO -------------------");
+        System.out.println("                 Presione 0 para regresar                 ");
+        System.out.print("\nNombre de distrito: ");
         nombreDistrito = scanner.nextLine().trim();
 
         if (nombreDistrito.isEmpty()) {
@@ -197,7 +203,7 @@ public class Distrito {
     }
     
     public void actualizarDistrito() {
-        String idDistritoIngresada;
+        int idDistritoIngresado;
         boolean distritoEncontrado = false;
         String nuevoNombreDistrito;
         List<String> distritos = new ArrayList<>();
@@ -209,18 +215,22 @@ public class Distrito {
         }
 
         listarDistritos();
+        System.out.println("\n------------------- ACTUALIZAR DISTRITO -------------------");
+        System.out.println("                 Presione 0 para regresar                 ");
+        idDistritoIngresado = utilidades.solicitarId(archivoDistrito, "Ingrese el ID del distrito a actualizar: ");
 
-        System.out.print("\nIngrese el ID del distrito a actualizar: ");
-        idDistritoIngresada = scanner.nextLine();
+        if (idDistritoIngresado == 0){
+            return;
+        }
         
         try (BufferedReader archivoDistritos = new BufferedReader(new FileReader(archivoDistrito))) {
             String line;
 
             while ((line = archivoDistritos.readLine()) != null) {
                 String[] datos = line.split("><");
-                String idDistritoGuardado = datos[0];
+                int idDistritoGuardado = Integer.parseInt(datos[0]);
 
-                if (idDistritoGuardado.equals(idDistritoIngresada)) {
+                if (idDistritoGuardado == idDistritoIngresado) {
                     System.out.print("\nIngrese el nuevo nombre del distrito: ");
                     nuevoNombreDistrito = scanner.nextLine();
 
@@ -262,7 +272,7 @@ public class Distrito {
     }
     
     public void eliminarDistrito() {
-        String idDistritoIngresada;
+        int idDistritoIngresado;
         boolean distritoEncontrado = false;
         List<String> distritos = new ArrayList<>();
 
@@ -273,18 +283,22 @@ public class Distrito {
         }
 
         listarDistritos();
+        System.out.println("\n------------------- ACTUALIZAR DISTRITO -------------------");
+        System.out.println("                 Presione 0 para regresar                 ");
+        idDistritoIngresado = utilidades.solicitarId(archivoDistrito, "Ingrese el ID del distrito a actualizar: ");
 
-        System.out.print("\nIngrese el ID del distrito a eliminar: ");
-        idDistritoIngresada = scanner.nextLine();
+        if (idDistritoIngresado == 0){
+            return;
+        }
         
         try (BufferedReader archivoDistritos = new BufferedReader(new FileReader(archivoDistrito))) {
             String line;
 
             while ((line = archivoDistritos.readLine()) != null) {
                 String[] datos = line.split("><");
-                String idDistritoGuardado = datos[0];
+                int idDistritoGuardado = Integer.parseInt(datos[0]);
 
-                if (idDistritoGuardado.equals(idDistritoIngresada)) {
+                if (idDistritoGuardado == idDistritoIngresado) {
                     distritoEncontrado = true;
                 } else {
                     distritos.add(line);

@@ -146,7 +146,7 @@ public class Ciudad {
     }
     
     public void actualizarCiudad() {
-        String idCiudadIngresada;
+        int idCiudadIngresada;
         boolean ciudadEncontrada = false;
         String nuevoNombreCiudad;
         List<String> ciudades = new ArrayList<>();
@@ -157,19 +157,24 @@ public class Ciudad {
             return;
         }
 
+        // PEDIR EL ID DE UNA CIUDAD VÁLIDA
         listarCiudades();
+        System.out.println("\n------------------- ACTUALIZAR CIUDAD -------------------");
+        System.out.println("                 Presione 0 para regresar                 ");
+        idCiudadIngresada = utilidades.solicitarId(archivoCiudad, "Ingrese el ID de la ciudad a actualizar: ");
 
-        System.out.print("\nIngrese el ID de la ciudad a actualizar: ");
-        idCiudadIngresada = scanner.nextLine();
+        if (idCiudadIngresada == 0){
+            return;
+        }
         
         try (BufferedReader archivoCiudades = new BufferedReader(new FileReader(archivoCiudad))) {
             String line;
 
             while ((line = archivoCiudades.readLine()) != null) {
                 String[] datos = line.split("><");
-                String idCiudadGuardada = datos[0];
+                int idCiudadGuardada = Integer.parseInt(datos[0]);
 
-                if (idCiudadGuardada.equals(idCiudadIngresada)) {
+                if (idCiudadGuardada == idCiudadIngresada) {
                     System.out.print("\nIngrese el nuevo nombre de la ciudad: ");
                     nuevoNombreCiudad = scanner.nextLine();
 
@@ -210,7 +215,7 @@ public class Ciudad {
     }
     
     public void eliminarCiudad() {
-        String idCiudadIngresada;
+        int idCiudadIngresada;
         boolean ciudadEncontrada = false;
         List<String> ciudades = new ArrayList<>();
 
@@ -220,24 +225,30 @@ public class Ciudad {
             return;
         }
 
+        // PEDIR EL ID DE UNA CIUDAD VÁLIDA
         listarCiudades();
+        System.out.println("\n------------------- ELIMINAR CIUDAD -------------------");
+        System.out.println("                 Presione 0 para regresar                 ");
+        idCiudadIngresada = utilidades.solicitarId(archivoCiudad, "Ingrese el ID de la ciudad a eliminar: ");
 
-        System.out.print("\nIngrese el ID de la ciudad a eliminar: ");
-        idCiudadIngresada = scanner.nextLine();
+        if (idCiudadIngresada == 0){
+            return;
+        }
         
         try (BufferedReader archivoCiudades = new BufferedReader(new FileReader(archivoCiudad))) {
             String line;
 
             while ((line = archivoCiudades.readLine()) != null) {
                 String[] datos = line.split("><");
-                String idCiudadGuardada = datos[0];
+                int idCiudadGuardada = Integer.parseInt(datos[0]);
 
-                if (idCiudadGuardada.equals(idCiudadIngresada)) {
+                if (idCiudadGuardada == idCiudadIngresada) {
                     ciudadEncontrada = true;
                 } else {
                     ciudades.add(line);
                 }
             }
+
         } catch (IOException e) {
             System.out.println("Ocurrió un error al leer las ciudades.");
             utilidades.pausa();

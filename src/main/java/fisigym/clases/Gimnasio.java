@@ -83,6 +83,7 @@ public class Gimnasio {
                         case 0 -> {
                             utilidades.limpiarPantalla();
                             System.out.println("Regresando al menú anterior...");
+                            utilidades.pausa();
                         }
                         case 1 -> {
                             utilidades.limpiarPantalla();
@@ -288,30 +289,30 @@ public class Gimnasio {
             utilidades.pausa();
             return;
         }
-
-        System.out.println("\n------------------- REGISTRAR GIMNASIO -------------------");
-        System.out.println("\n                 Presione 0 para regresar                 ");
         
-        // Pedir ID de ciudad válido
+        // PEDIR EL ID DE UNA CIUDAD VÁLIDA
         ciudad.listarCiudades();
-        idCiudad = utilidades.solicitarId("ciudades.txt");
+        System.out.println("\n------------------- REGISTRAR GIMNASIO -------------------");
+        System.out.println("                 Presione 0 para regresar                 ");
+        idCiudad = utilidades.solicitarId("ciudades.txt", "Ingrese el ID de la ciudad: ");
 
         if (idCiudad == 0){
-            System.out.println("Regresando al menú anterior...");
-            utilidades.pausa();
             return;
         }
         
-        // Pedir ID de distrito válido
+        // PEDIR EL ID DE UN DISTRITO VÁLIDO
+        utilidades.limpiarPantalla();
         distrito.listarDistritosPorCiudad(idCiudad);
-        idDistrito = utilidades.solicitarId("distritos.txt");
+        System.out.println("\n------------------- REGISTRAR GIMNASIO -------------------");
+        System.out.println("                 Presione 0 para regresar                 ");
+        idDistrito = utilidades.solicitarId("distritos.txt", "Ingrese el ID del distrito: ");
         
-        if (idCiudad == 0){
-            System.out.println("Regresando al menú anterior...");
-            utilidades.pausa();
+        if (idDistrito == 0){
             return;
         }
         
+        utilidades.limpiarPantalla();
+        System.out.println("------------------- REGISTRAR GIMNASIO -------------------");
         System.out.print("Nombre del gimnasio: ");
         nombreGimnasio = scanner.nextLine().trim();
 
@@ -342,14 +343,16 @@ public class Gimnasio {
             return;
         }
         
-        System.out.println("¿Desea actualizar el menú de servicios? (0: NO) (1: SÍ): ");
+        System.out.print("\n¿Desea agregar servicios al gimnasio? (0: NO) (1: SÍ): ");
         confirmacionServicios = scanner.nextLine();
                             
         if( confirmacionServicios.equals("1") ) {
             serviciosGimnasio.menuServicios();
         }
-
+        
         idGimnasio = generarIdUnico();
+        utilidades.limpiarPantalla();
+        System.out.println("---------------------------------------------------------");
         System.out.println("ID del gimnasio: " + idGimnasio);
         System.out.println("Nombre: " + nombreGimnasio);
         System.out.println("Direccion: " + direccion);
@@ -379,16 +382,30 @@ public class Gimnasio {
             String line;
             boolean hayGimnasios=false;
 
-            System.out.println("\tID Gimnasio\tCiudad\t\tDistrito\t\tNombres\t\t\tDirección");
+            // Encabezado de la tabla
+            // %s: Representa una cadena, %d: representa un entero, - indica alineación a la izquierda
+            System.out.printf("%-15s %-15s %-20s %-30s %-20s\n",
+                        "ID Gimnasio", "Ciudad", "Distrito", "Nombres", "Dirección");
             
             while((line = archivoGimnasios.readLine()) !=null){
                 String[] datos = line.split("><");
+
                 //idCiudad = Integer.parseInt(datos[1]);
                 //idDistrito = Integer.parseInt(datos[2]);
                 String nombreCiudad = ciudad.obtenerNombreCiudad( Integer.parseInt(datos[1]) );
                 String nombreDistrito = distrito.obtenerNombreDistrito( Integer.parseInt(datos[2]) );
+                String direccionGimnasio = datos[4];
+                nombreGimnasio = datos[3];
 
-                System.out.println("\t" + datos[0] + "\t\t" + nombreCiudad + "\t\t" + nombreDistrito + "\t\t" + datos[3] + "\t\t" + datos[4]);
+                // Limitar el tamaño de las cadenas si son muy largas
+                nombreCiudad = (nombreCiudad.length() > 15) ? nombreCiudad.substring(0, 12) + "..." : nombreCiudad;
+                nombreDistrito = (nombreDistrito.length() > 20) ? nombreDistrito.substring(0, 17) + "..." : nombreDistrito;
+                nombreGimnasio = (nombreGimnasio.length() > 30) ? nombreGimnasio.substring(0, 27) + "..." : nombreGimnasio;
+                direccionGimnasio = (direccionGimnasio.length() > 20) ? direccionGimnasio.substring(0, 17) + "..." : direccionGimnasio;
+
+                System.out.printf("%-15s %-15s %-20s %-30s %-20s\n",
+                            datos[0], nombreCiudad, nombreDistrito, nombreGimnasio, direccionGimnasio);
+                
                 hayGimnasios=true;
             }
 
@@ -413,16 +430,23 @@ public class Gimnasio {
             String line;
             boolean hayGimnasios=false;
 
-            System.out.println("\tID Gimnasio\t\tPiscina\t\tSpa\t\tCochera\t\tCafeteria\t\tVestidores\t\tWifi");
-            
+            // Encabezado de la tabla
+            System.out.printf("%-15s %-30s %-10s %-10s %-10s %-15s %-15s %-10s\n",
+                        "ID Gimnasio",  "Nombre", "Piscina", "Spa", "Cochera", "Cafetería", "Vestidores", "WiFi");
+
             while((line = archivoGimnasios.readLine()) !=null){
                 String[] datos = line.split("><");
                 //idCiudad=Integer.parseInt(datos[1]);
                 //idDistrito=Integer.parseInt(datos[2]);
                 //String nombreCiudad = ciudad.obtenerNombreCiudad(idCiudad);
                 //String nombreDistrito = distrito.obtenerNombreDistrito(idDistrito);
+                nombreGimnasio = datos[3];
 
-                System.out.println("\t" + datos[0] + "\t\t"+datos[5]+"\t\t"+datos[6]+"\t\t"+datos[7]+"\t\t"+datos[8]+"\t\t"+datos[9]+"\t\t"+datos[10]);
+                // Limitar el tamaño de las cadenas si son muy largas
+                nombreGimnasio = (nombreGimnasio.length() > 30) ? nombreGimnasio.substring(0, 27) + "..." : nombreGimnasio;
+
+                System.out.printf("%-15s %-30s %-10s %-10s %-10s %-15s %-15s %-10s\n",
+                            datos[0], nombreGimnasio, datos[5], datos[6], datos[7], datos[8], datos[9], datos[10]);
                 hayGimnasios=true;
             }
 
@@ -437,7 +461,7 @@ public class Gimnasio {
     }
 
     public void actualizarGimnasio(){
-        String idGimnasioIngresada;
+        int idGimnasioIngresado;
         boolean gimnasioEncontrado=false;
         String nuevoNombreGimnasio;
         String nuevaDireccionGimnasio;
@@ -450,18 +474,22 @@ public class Gimnasio {
         }
 
         listarGimnasios();
-        
-        System.out.print("\nIngrese el ID del gimnasio a actualizar: ");
-        idGimnasioIngresada = scanner.nextLine();
+        System.out.println("\n------------------- ACTUALIZAR GIMNASIO -------------------");
+        System.out.println("                  Presione 0 para regresar                 ");
+        idGimnasioIngresado = utilidades.solicitarId(archivoGimnasio, "Ingrese el ID del gimnasio a actualizar: ");
+
+        if (idGimnasioIngresado == 0){
+            return;
+        }
         
         try (BufferedReader archivoGimnasios = new BufferedReader(new FileReader(archivoGimnasio))) {
             String line;
             
             while ((line = archivoGimnasios.readLine()) != null) {
                 String[] datos = line.split("><");
-                String idGimnasioGuardado = datos[0];
+                int idGimnasioGuardado = Integer.parseInt(datos[0]);
                 
-                if (idGimnasioGuardado.equals(idGimnasioIngresada)) {
+                if (idGimnasioGuardado == idGimnasioIngresado) {
                     System.out.print("\nIngrese el nuevo nombre del gimnasio (presione enter para mantener el actual): ");
                     nuevoNombreGimnasio = scanner.nextLine();
                     
@@ -500,20 +528,20 @@ public class Gimnasio {
                     archivoGimnasios.newLine();
                 }
 
-                System.out.println("El gimnasio ha sido actualizado exitosamente.");
+                System.out.println("\nEl gimnasio ha sido actualizado exitosamente.");
                 utilidades.pausa();
             } catch (IOException e) {
-                System.out.println("Ocurrió un error al actualizar el gimnasio.");
+                System.out.println("\nOcurrió un error al actualizar el gimnasio.");
                 utilidades.pausa();
             }
         } else {
-            System.out.println("No se encontró un gimnasio con el ID proporcionado.");
+            System.out.println("\nNo se encontró un gimnasio con el ID proporcionado.");
             utilidades.pausa();
         }
     }
     
     public void eliminarGimnasio(){
-        String idGimnasioIngresada;
+        int idGimnasioIngresado;
         boolean gimnasioEncontrado = false;
         List<String> gimnasios = new ArrayList<>();
         
@@ -523,19 +551,24 @@ public class Gimnasio {
 
             return;
         }
-        
+
         listarGimnasios();
-        System.out.print("\nIngrese el ID del gimnasio a eliminar: ");
-        idGimnasioIngresada = scanner.nextLine();
+        System.out.println("\n------------------- ELIMINAR GIMNASIO -------------------");
+        System.out.println("                  Presione 0 para regresar                 ");
+        idGimnasioIngresado = utilidades.solicitarId(archivoGimnasio, "Ingrese el ID del gimnasio a eliminar: ");
+
+        if (idGimnasioIngresado == 0){
+            return;
+        }
 
         try (BufferedReader archivoGimnasios = new BufferedReader(new FileReader(archivoGimnasio))){
             String line;
 
             while((line = archivoGimnasios.readLine()) != null){
                 String[] datos = line.split("><");
-                String idGimnasioGuardado = datos[0];
+                int idGimnasioGuardado = Integer.parseInt(datos[0]);
 
-                if (idGimnasioGuardado.equals(idGimnasioIngresada)){
+                if (idGimnasioGuardado == idGimnasioIngresado){
                     gimnasioEncontrado = true;
                 } else {
                     gimnasios.add(line);
@@ -555,14 +588,14 @@ public class Gimnasio {
                     archivoGimnasios.newLine();
                 }
 
-                System.out.println("El gimnasio ha sido eliminado exitosamente.");
+                System.out.println("\nEl gimnasio ha sido eliminado exitosamente.");
                 utilidades.pausa();
             }catch (IOException e){
-                System.out.println("Ocurrió un error al eliminar el gimnasio.");
+                System.out.println("\nOcurrió un error al eliminar el gimnasio.");
                 utilidades.pausa();
             }
         }else {
-            System.out.println("No se encontró un gimnasio con el ID proporcionado.");
+            System.out.println("\nNo se encontró un gimnasio con el ID proporcionado.");
             utilidades.pausa();
         }
     }

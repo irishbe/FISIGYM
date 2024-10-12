@@ -105,21 +105,28 @@ public class Utilidades {
         return false;
     }
 
-    public int solicitarId(String archivo) {
+    public int solicitarId(String archivo, String mensaje) {
         int idIngresado = -1;
         boolean existe = false;
 
         while (!existe && idIngresado != 0) {
-            System.out.print("Ingrese el ID: ");
+            System.out.print("\n" + mensaje);
             
             try {
                 idIngresado = scanner.nextInt();
                 scanner.nextLine();
 
                 existe = verificarId(idIngresado, archivo);
+
+                if (idIngresado == 0){
+                    limpiarPantalla();
+                    System.out.println("Regresando al menú anterior...");
+                    pausa();
+                    return idIngresado;
+                }
                 
-                if (!existe) {
-                    System.out.println("El ID " + idIngresado + " no existe en el archivo. Intente nuevamente.");
+                if (!existe && idIngresado != 0) {
+                    System.out.println("El ID " + idIngresado + " no existe. Intente nuevamente.");
                 }
 
             } catch (InputMismatchException e) {
