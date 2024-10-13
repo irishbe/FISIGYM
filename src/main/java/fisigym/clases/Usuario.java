@@ -10,13 +10,14 @@ import java.util.Scanner;
 public class Usuario {
     private Membresia membresia = new Membresia();
     final Scanner scanner = new Scanner(System.in);
+    final Utilidades utilidades = new Utilidades();
     
-    private String nombreUsuario;
-    private String correo;
-    private String dni;
-    private String nombre;
-    private String apellido;
-    private String contrasenia;
+    protected String nombreUsuario;
+    protected String correo;
+    protected String dni;
+    protected String nombre;
+    protected String apellido;
+    protected String contrasenia;
     
     public Usuario(){};
     
@@ -27,8 +28,6 @@ public class Usuario {
     
     public void iniciarSesion() {
         var servicios = new Servicios();
-        var utilidades = new Utilidades();
-        
         String identificadorIngresado;
         String contraseniaIngresada;
         
@@ -49,8 +48,6 @@ public class Usuario {
     }
     
     public void registrarUsuario() {
-        Utilidades utilidades = new Utilidades();
-
         System.out.println("\n------------------- REGISTRAR CUENTA -------------------");
         System.out.print("Nombre de usuario:  "); nombreUsuario = scanner.nextLine().trim();
         
@@ -106,8 +103,6 @@ public class Usuario {
     }
     
     private void almacenarUsuario() {
-        var utilidades = new Utilidades();
-        
         try (BufferedWriter archivoUsuarios = new BufferedWriter(new FileWriter("usuarios.txt", true))) {
             archivoUsuarios.write(this.toString());
             archivoUsuarios.newLine();

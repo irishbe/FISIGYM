@@ -16,8 +16,6 @@ public class Personal extends Usuario {
     }
 
     protected void almacenarPersonal() {
-        var utilidades = new Utilidades();
-
         try (BufferedWriter archivoAdministradores = new BufferedWriter(new FileWriter("administradores.txt", true))) {
             archivoAdministradores.write(this.toString());
             archivoAdministradores.newLine();
@@ -32,7 +30,6 @@ public class Personal extends Usuario {
     }
 
     private String seleccionarRol() {
-        var utilidades = new Utilidades();
         int opcion = -1;
 
         do {
@@ -73,7 +70,6 @@ public class Personal extends Usuario {
     }
 
     public void menuAdministrador() {
-        var utilidades = new Utilidades();
         var ciudad = new Ciudad();
         var distrito = new Distrito();
         var gimnasio = new Gimnasio();
@@ -151,7 +147,6 @@ public class Personal extends Usuario {
     }
     
     public void menuRecepcionista() {
-        var utilidades = new Utilidades();
         int opcion = -1;
 
         do {
@@ -226,8 +221,6 @@ public class Personal extends Usuario {
     
     @Override
     public void iniciarSesion() {
-        var utilidades = new Utilidades();
-
         System.out.println("\n------------------ INICIAR SESIÓN (ADMIN) ------------------");
         System.out.print("Correo o usuario:  ");
         String identificadorIngresado = scanner.nextLine();

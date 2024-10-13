@@ -33,7 +33,6 @@ public class Gimnasio {
     }
 
     public Gimnasio(){
-        this.serviciosGimnasio = new ServiciosGimnasio();
     }
     
     // Clase anidada para los servicios
@@ -54,7 +53,13 @@ public class Gimnasio {
             this.wifi = wifi;
         }
 
-        public ServiciosGimnasio(){           
+        public ServiciosGimnasio(){
+            this.piscina = false;
+            this.spa = false;
+            this.cochera = false;
+            this.cafeteria = false;
+            this.vestidores = false;
+            this.wifi = false;
         }
 
         public void menuServicios(){
@@ -348,6 +353,7 @@ public class Gimnasio {
             return;
         }
         
+        this.serviciosGimnasio = new ServiciosGimnasio();
         System.out.print("\n¿Desea agregar servicios al gimnasio? (0: NO) (1: SÍ): ");
         confirmacionServicios = scanner.nextLine();
                             
