@@ -73,6 +73,8 @@ public class Distrito {
     public void registrarDistrito() {
         Ciudad ciudad = new Ciudad();
 
+        utilidades.verificarArchivo("ciudades.txt");
+
         if (utilidades.verificarArchivoConContenido("ciudades.txt") == false) {
             System.out.println("Primero registre una ciudad en el menú de gestor de ciudades.");
             utilidades.pausa();

@@ -148,6 +148,9 @@ public class Gimnasio {
         Distrito distrito = new Distrito();
         String confirmacionServicios;
 
+        utilidades.verificarArchivo("ciudades.txt");
+        utilidades.verificarArchivo("distritos.txt");
+
         if (utilidades.verificarArchivoConContenido("ciudades.txt") == false) {
             System.out.println("Primero registre una ciudad en el menú de gestor de ciudades.");
             utilidades.pausa();
@@ -237,6 +240,7 @@ public class Gimnasio {
         System.out.println("Nombre: " + nombreGimnasio);
         System.out.println("Direccion: " + direccion);
         System.out.println("---------------------------------------------------------");
+        
         this.guardarGimnasio();
     }
 

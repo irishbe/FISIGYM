@@ -191,7 +191,7 @@ public class Entrenador extends Usuario {
         System.out.println("RUC: " + ruc);
         System.out.println("---------------------------------------------------------");
     
-        guardarEntrenador();
+        this.guardarEntrenador();
     }
 
     private void guardarEntrenador() {
@@ -288,24 +288,6 @@ public class Entrenador extends Usuario {
             // utilidades.pausa(); No poner pausa en método listar
         }
     }
-
-    // Método para mostrar detalles completos de un entrenador seleccionado
-    /*private void mostrarDetallesEntrenador(String datosEntrenador) {
-        String[] detalles = datosEntrenador.split("><");
-        String dni = detalles[0];
-        System.out.println("\n------------------- DETALLES DEL ENTRENADOR -------------------");
-        System.out.println("Nombre: " + detalles[1]);
-        System.out.println("DNI: " + dni);
-        System.out.println("Correo: " + detalles[2]);
-        System.out.println("Telefono: " + detalles[3]);
-        System.out.println("RUC: " + detalles[4]);
-        System.out.println("\nDisciplinas:");
-
-        // Mostrar las disciplinas asociadas al entrenador
-        mostrarDisciplinasEntrenador(dni);
-
-        utilidades.pausa();
-    }*/
 
     public void actualizarEntrenador() {
         boolean entrenadorEncontrado = false;
@@ -507,7 +489,7 @@ public class Entrenador extends Usuario {
                 System.out.println("5.\tAqua Fitness");
                 System.out.println("6.\tTRX");
                 System.out.println("7.\tSpinning");
-                System.out.println("6.\tCross Fit");
+                System.out.println("8.\tCross Fit");
                 System.out.println("\n0.\tRegresar al menú anterior");
                 
                 try {

@@ -84,9 +84,9 @@ public class Personal extends Usuario {
             System.out.println("2.\tGestionar distritos");
             System.out.println("3.\tGestionar gimnasios");
             System.out.println("4.\tGestionar entrenadores");
-            System.out.println("5.\tGestionar entrenadores personales");
-            System.out.println("6.\tGestionar clases");
-            System.out.println("7.\tRegistrar membresía");
+            //System.out.println("5.\tGestionar entrenadores personales");
+            //System.out.println("6.\tGestionar clases");
+            //System.out.println("7.\tRegistrar membresía");
             System.out.println("\n0.\tCerrar sesión");
 
             try {
@@ -102,22 +102,18 @@ public class Personal extends Usuario {
                     case 1 -> {
                         utilidades.limpiarPantalla();
                         ciudad.menuCiudad();
-                        utilidades.pausa();
                     }
                     case 2 -> {
                         utilidades.limpiarPantalla();
                         distrito.menuDistrito();
-                        utilidades.pausa();
                     }
                     case 3 -> {
                         utilidades.limpiarPantalla();
                         gimnasio.menuGimnasio();
-                        utilidades.pausa();
                     }
                     case 4 -> {
                         utilidades.limpiarPantalla();
                         entrenador.menuEntrenadores();
-                        utilidades.pausa();
                     }
                     case 5 -> {
                         utilidades.limpiarPantalla();
