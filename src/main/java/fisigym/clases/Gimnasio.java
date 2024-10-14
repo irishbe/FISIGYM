@@ -34,208 +34,73 @@ public class Gimnasio {
 
     public Gimnasio(){
     }
-    
-    // Clase anidada para los servicios
-    public class ServiciosGimnasio{
-        private boolean piscina;
-        private boolean spa;
-        private boolean cochera;
-        private boolean cafeteria;
-        private boolean vestidores;
-        private boolean wifi;
-
-        public ServiciosGimnasio(boolean piscina, boolean spa, boolean cochera, boolean cafeteria, boolean vestidores, boolean wifi){
-            this.piscina = piscina;
-            this.spa = spa;
-            this.cochera = cochera;
-            this.cafeteria = cafeteria;
-            this.vestidores = vestidores;
-            this.wifi = wifi;
-        }
-
-        public ServiciosGimnasio(){
-            this.piscina = false;
-            this.spa = false;
-            this.cochera = false;
-            this.cafeteria = false;
-            this.vestidores = false;
-            this.wifi = false;
-        }
-
-        public void menuServicios(){
-            utilidades.verificarArchivo(archivoGimnasio);
-
-            int opcion = -1;
-            String respuestaServicio;
-
-            do {
-                utilidades.limpiarPantalla();
-                System.out.println("\n------------------- ACTUALIZAR SERVICIOS -------------------");
-                System.out.println("\n1.\tPiscina");
-                System.out.println("2.\tSpa");
-                System.out.println("3.\tCochera");
-                System.out.println("4.\tCafetería");
-                System.out.println("5.\tVestidores");
-                System.out.println("6.\tWiFi");
-                System.out.println("\n0.\tRegresar al menú anterior");
-                
-                try {
-                    System.out.print("\nDigite su opción: ");
-                    opcion = scanner.nextInt();
-                    scanner.nextLine();
-
-                    switch (opcion) {
-                        case 0 -> {
-                            utilidades.limpiarPantalla();
-                            System.out.println("Regresando al menú anterior...");
-                            utilidades.pausa();
-                        }
-                        case 1 -> {
-                            utilidades.limpiarPantalla();
-                            System.out.print("El gimnasio tiene piscina (0: NO) (1: SÍ): ");
-                            respuestaServicio = scanner.nextLine();
-                            
-                            if( respuestaServicio.equals("1") ) {
-                                System.out.println("Piscina: Sí");
-                                serviciosGimnasio.setPiscina(true);
-                            } else {
-                                System.out.println("Piscina: No");
-                                serviciosGimnasio.setPiscina(false);            
-                            }
-                        }
-                        case 2 -> {
-                            utilidades.limpiarPantalla();
-                            System.out.print("El gimnasio tiene spa (0: NO) (1: SÍ): ");
-                            respuestaServicio = scanner.nextLine();
-                            
-                            if( respuestaServicio.equals("1") ) {
-                                System.out.println("Spa: Sí");
-                                serviciosGimnasio.setSpa(true);
-                            } else {
-                                System.out.println("Spa: No");
-                                serviciosGimnasio.setSpa(false);            
-                            }
-                        }
-                        case 3 -> {
-                            utilidades.limpiarPantalla();
-                            System.out.print("El gimnasio tiene cochera (0: NO) (1: SÍ): ");
-                            respuestaServicio = scanner.nextLine();
-                            
-                            if( respuestaServicio.equals("1") ) {
-                                System.out.println("Cochera: Sí");
-                                serviciosGimnasio.setCochera(true);
-                            } else {
-                                System.out.println("Cochera: No");
-                                serviciosGimnasio.setCochera(false);            
-                            }
-                        }
-                        case 4 -> {
-                            utilidades.limpiarPantalla();
-                            System.out.print("El gimnasio tiene cafetería (0: NO) (1: SÍ): ");
-                            respuestaServicio = scanner.nextLine();
-                            
-                            if( respuestaServicio.equals("1") ) {
-                                System.out.println("Cafetería: Sí");
-                                serviciosGimnasio.setCafeteria(true);
-                            } else {
-                                System.out.println("Cafetería: No");
-                                serviciosGimnasio.setCafeteria(false);            
-                            }
-                        }
-                        case 5 -> {
-                            utilidades.limpiarPantalla();
-                            System.out.print("El gimnasio tiene vestidores (0: NO) (1: SÍ): ");
-                            respuestaServicio = scanner.nextLine();
-                            
-                            if( respuestaServicio.equals("1") ) {
-                                System.out.println("Vestidores: Sí");
-                                serviciosGimnasio.setVestidores(true);
-                            } else {
-                                System.out.println("Vestidores: No");
-                                serviciosGimnasio.setVestidores(false);            
-                            }
-                        }
-                        case 6 -> {
-                            utilidades.limpiarPantalla();
-                            System.out.print("El gimnasio tiene WiFi (0: NO) (1: SÍ): ");
-                            respuestaServicio = scanner.nextLine();
-                            
-                            if( respuestaServicio.equals("1") ) {
-                                System.out.println("WiFi: Sí");
-                                serviciosGimnasio.setWifi(true);
-                            } else {
-                                System.out.println("WiFi: No");
-                                serviciosGimnasio.setWifi(false);            
-                            }
-                        }
-                        default -> {
-                            System.out.println("Entrada no válida. Por favor, ingrese una de las opciones.");
-                            utilidades.pausa();
-                            scanner.nextLine();
-                        }
-                    }
-                } catch (InputMismatchException e) {
-                    System.out.println("Entrada no válida. Por favor, ingrese una de las opciones.");
-                    utilidades.pausa();
-                    scanner.nextLine();
-                }
-            } while (opcion != 0);
-        }
-
-        public void setPiscina(boolean piscina) {
-            this.piscina = piscina;
-        }
-
-        public boolean getPiscina() {
-            return piscina;
-        }
-
-        public void setSpa(boolean spa) {
-            this.spa = spa;
-        }
-
-        public boolean getSpa() {
-            return spa;
-        }
-
-        public void setCochera(boolean cochera) {
-            this.cochera = cochera;
-        }
-
-        public boolean getCochera() {
-            return cochera;
-        }
-
-        public void setCafeteria(boolean cafeteria) {
-            this.cafeteria = cafeteria;
-        }
-
-        public boolean getCafeteria() {
-            return cafeteria;
-        }
-
-        public void setVestidores(boolean vestidores) {
-            this.vestidores = vestidores;
-        }
-
-        public boolean getVestidores() {
-            return vestidores;
-        }
-
-        public void setWifi(boolean wifi) {
-            this.wifi = wifi;
-        }
-
-        public boolean getWifi() {
-            return wifi;
-        }
-    }
 
     // Método toString para formatear el guardado en archivo
     @Override
     public String toString() {
         return idGimnasio + "><" + idCiudad + "><" + idDistrito + "><" + nombreGimnasio + "><" + direccion + "><" + serviciosGimnasio.getPiscina() + "><"+
             serviciosGimnasio.getSpa() + "><" + serviciosGimnasio.getCochera() + "><" + serviciosGimnasio.getCafeteria() + "><" + serviciosGimnasio.getVestidores() + "><" + serviciosGimnasio.getWifi();
+    }
+
+    public void menuGimnasio(){
+        utilidades.verificarArchivo(archivoGimnasio);
+
+        int opcion = -1;
+
+        do {
+            utilidades.limpiarPantalla();
+            System.out.println("\n------------------- MENÚ DE GIMNASIO -------------------");
+            System.out.println("\n1.\tRegistrar gimnasio");
+            System.out.println("2.\tListar gimnasios");
+            System.out.println("3.\tActualizar gimnasio");
+            System.out.println("4.\tEliminar gimnasio");
+            System.out.println("5.\tListar Servicios");
+            System.out.println("\n0.\tRegresar al menú anterior");
+
+            try {
+                System.out.print("\nDigite su opción: ");
+                opcion = scanner.nextInt();
+                scanner.nextLine();
+
+                switch (opcion) {
+                    case 0 -> {
+                        utilidades.limpiarPantalla();
+                        System.out.println("Regresando al menú anterior...");
+                    }
+                    case 1 -> {
+                        utilidades.limpiarPantalla();
+                        registrarGimnasio();
+                    }
+                    case 2 -> {
+                        utilidades.limpiarPantalla();
+                        listarGimnasios();
+                        utilidades.pausa(); // Solo pausa en listar
+                    }
+                    case 3 -> {
+                        utilidades.limpiarPantalla();
+                        actualizarGimnasio();
+                    }
+                    case 4 -> {
+                        utilidades.limpiarPantalla();
+                        eliminarGimnasio();
+                    }
+                    case 5 -> {
+                        utilidades.limpiarPantalla();
+                        listarServicios();
+                        utilidades.pausa(); // Solo pausa en listar
+                    }
+                    default -> {
+                        System.out.println("Entrada no válida. Por favor, ingrese una de las opciones.");
+                        utilidades.pausa();
+                        scanner.nextLine();
+                    }
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Entrada no válida. Por favor, ingrese una de las opciones.");
+                utilidades.pausa();
+                scanner.nextLine();
+            }
+        } while (opcion != 0);
     }
 
     // Método para generar un ID único para gimnasios
@@ -354,11 +219,15 @@ public class Gimnasio {
         }
         
         this.serviciosGimnasio = new ServiciosGimnasio();
+
         System.out.print("\n¿Desea agregar servicios al gimnasio? (0: NO) (1: SÍ): ");
         confirmacionServicios = scanner.nextLine();
                             
         if( confirmacionServicios.equals("1") ) {
-            serviciosGimnasio.menuServicios();
+            serviciosGimnasio.registrarServicios();
+        } else {
+            System.out.println("\nNo se registró ningún servicio en el gimnasio");
+            utilidades.pausa();
         }
         
         idGimnasio = generarIdUnico();
@@ -378,7 +247,7 @@ public class Gimnasio {
             System.out.println("\n¡Gimnasio registrado con éxito!");
             utilidades.pausa();
         } catch (IOException e) {
-            System.out.println("Ocurrió un error al registrar el gimnasio.");
+            System.out.println("\nOcurrió un error al registrar el gimnasio.");
             utilidades.pausa();
         }
     }
@@ -610,66 +479,213 @@ public class Gimnasio {
             utilidades.pausa();
         }
     }
-    
-    public void menuGimnasio(){
-        utilidades.verificarArchivo(archivoGimnasio);
 
-        int opcion = -1;
+    // Clase anidada para los servicios
+    public class ServiciosGimnasio{
+        private boolean piscina;
+        private boolean spa;
+        private boolean cochera;
+        private boolean cafeteria;
+        private boolean vestidores;
+        private boolean wifi;
 
-        do {
-            utilidades.limpiarPantalla();
-            System.out.println("\n------------------- MENÚ DE GIMNASIO -------------------");
-            System.out.println("\n1.\tRegistrar gimnasio");
-            System.out.println("2.\tListar gimnasios");
-            System.out.println("3.\tActualizar gimnasio");
-            System.out.println("4.\tEliminar gimnasio");
-            System.out.println("5.\tListar Servicios");
-            System.out.println("\n0.\tRegresar al menú anterior");
+        public ServiciosGimnasio(boolean piscina, boolean spa, boolean cochera, boolean cafeteria, boolean vestidores, boolean wifi){
+            this.piscina = piscina;
+            this.spa = spa;
+            this.cochera = cochera;
+            this.cafeteria = cafeteria;
+            this.vestidores = vestidores;
+            this.wifi = wifi;
+        }
 
-            try {
-                System.out.print("\nDigite su opción: ");
-                opcion = scanner.nextInt();
-                scanner.nextLine();
+        public ServiciosGimnasio(){
+            this.piscina = false;
+            this.spa = false;
+            this.cochera = false;
+            this.cafeteria = false;
+            this.vestidores = false;
+            this.wifi = false;
+        }
 
-                switch (opcion) {
-                    case 0 -> {
-                        utilidades.limpiarPantalla();
-                        System.out.println("Regresando al menú anterior...");
+        public void registrarServicios(){
+            utilidades.verificarArchivo(archivoGimnasio);
+
+            int opcion = -1;
+            String respuestaServicio;
+
+            do {
+                utilidades.limpiarPantalla();
+                System.out.println("\n------------------- ACTUALIZAR SERVICIOS -------------------");
+                System.out.println("\n1.\tPiscina");
+                System.out.println("2.\tSpa");
+                System.out.println("3.\tCochera");
+                System.out.println("4.\tCafetería");
+                System.out.println("5.\tVestidores");
+                System.out.println("6.\tWiFi");
+                System.out.println("\n0.\tRegresar al menú anterior");
+                
+                try {
+                    System.out.print("\nDigite su opción: ");
+                    opcion = scanner.nextInt();
+                    scanner.nextLine();
+
+                    switch (opcion) {
+                        case 0 -> {
+                            utilidades.limpiarPantalla();
+                            System.out.println("Regresando al menú anterior...");
+                            utilidades.pausa();
+                        }
+                        case 1 -> {
+                            utilidades.limpiarPantalla();
+                            System.out.print("El gimnasio tiene piscina (0: NO) (1: SÍ): ");
+                            respuestaServicio = scanner.nextLine();
+                            
+                            if( respuestaServicio.equals("1") ) {
+                                System.out.println("Piscina: Sí");
+                                setPiscina(true);
+                            } else {
+                                System.out.println("Piscina: No");
+                                setPiscina(false);            
+                            }
+
+                            utilidades.pausa();
+                        }
+                        case 2 -> {
+                            utilidades.limpiarPantalla();
+                            System.out.print("El gimnasio tiene spa (0: NO) (1: SÍ): ");
+                            respuestaServicio = scanner.nextLine();
+                            
+                            if( respuestaServicio.equals("1") ) {
+                                System.out.println("Spa: Sí");
+                                setSpa(true);
+                            } else {
+                                System.out.println("Spa: No");
+                                setSpa(false);            
+                            }
+
+                            utilidades.pausa();
+                        }
+                        case 3 -> {
+                            utilidades.limpiarPantalla();
+                            System.out.print("El gimnasio tiene cochera (0: NO) (1: SÍ): ");
+                            respuestaServicio = scanner.nextLine();
+                            
+                            if( respuestaServicio.equals("1") ) {
+                                System.out.println("Cochera: Sí");
+                                setCochera(true);
+                            } else {
+                                System.out.println("Cochera: No");
+                                setCochera(false);            
+                            }
+
+                            utilidades.pausa();
+                        }
+                        case 4 -> {
+                            utilidades.limpiarPantalla();
+                            System.out.print("El gimnasio tiene cafetería (0: NO) (1: SÍ): ");
+                            respuestaServicio = scanner.nextLine();
+                            
+                            if( respuestaServicio.equals("1") ) {
+                                System.out.println("Cafetería: Sí");
+                                setCafeteria(true);
+                            } else {
+                                System.out.println("Cafetería: No");
+                                setCafeteria(false);            
+                            }
+
+                            utilidades.pausa();
+                        }
+                        case 5 -> {
+                            utilidades.limpiarPantalla();
+                            System.out.print("El gimnasio tiene vestidores (0: NO) (1: SÍ): ");
+                            respuestaServicio = scanner.nextLine();
+                            
+                            if( respuestaServicio.equals("1") ) {
+                                System.out.println("Vestidores: Sí");
+                                setVestidores(true);
+                            } else {
+                                System.out.println("Vestidores: No");
+                                setVestidores(false);            
+                            }
+
+                            utilidades.pausa();
+                        }
+                        case 6 -> {
+                            utilidades.limpiarPantalla();
+                            System.out.print("El gimnasio tiene WiFi (0: NO) (1: SÍ): ");
+                            respuestaServicio = scanner.nextLine();
+                            
+                            if( respuestaServicio.equals("1") ) {
+                                System.out.println("WiFi: Sí");
+                                setWifi(true);
+                            } else {
+                                System.out.println("WiFi: No");
+                                setWifi(false);            
+                            }
+
+                            utilidades.pausa();
+                        }
+                        default -> {
+                            System.out.println("Entrada no válida. Por favor, ingrese una de las opciones.");
+                            utilidades.pausa();
+                            scanner.nextLine();
+                        }
                     }
-                    case 1 -> {
-                        utilidades.limpiarPantalla();
-                        registrarGimnasio();
-                    }
-                    case 2 -> {
-                        utilidades.limpiarPantalla();
-                        listarGimnasios();
-                        utilidades.pausa(); // Solo pausa en listar
-                    }
-                    case 3 -> {
-                        utilidades.limpiarPantalla();
-                        actualizarGimnasio();
-                    }
-                    case 4 -> {
-                        utilidades.limpiarPantalla();
-                        eliminarGimnasio();
-                    }
-                    case 5 -> {
-                        utilidades.limpiarPantalla();
-                        listarServicios();
-                        utilidades.pausa(); // Solo pausa en listar
-                    }
-                    default -> {
-                        System.out.println("Entrada no válida. Por favor, ingrese una de las opciones.");
-                        utilidades.pausa();
-                        scanner.nextLine();
-                    }
+                } catch (InputMismatchException e) {
+                    System.out.println("Entrada no válida. Por favor, ingrese una de las opciones.");
+                    utilidades.pausa();
+                    scanner.nextLine();
                 }
-            } catch (InputMismatchException e) {
-                System.out.println("Entrada no válida. Por favor, ingrese una de las opciones.");
-                utilidades.pausa();
-                scanner.nextLine();
-            }
-        } while (opcion != 0);
+            } while (opcion != 0);
+        }
+
+        public void setPiscina(boolean piscina) {
+            this.piscina = piscina;
+        }
+
+        public boolean getPiscina() {
+            return piscina;
+        }
+
+        public void setSpa(boolean spa) {
+            this.spa = spa;
+        }
+
+        public boolean getSpa() {
+            return spa;
+        }
+
+        public void setCochera(boolean cochera) {
+            this.cochera = cochera;
+        }
+
+        public boolean getCochera() {
+            return cochera;
+        }
+
+        public void setCafeteria(boolean cafeteria) {
+            this.cafeteria = cafeteria;
+        }
+
+        public boolean getCafeteria() {
+            return cafeteria;
+        }
+
+        public void setVestidores(boolean vestidores) {
+            this.vestidores = vestidores;
+        }
+
+        public boolean getVestidores() {
+            return vestidores;
+        }
+
+        public void setWifi(boolean wifi) {
+            this.wifi = wifi;
+        }
+
+        public boolean getWifi() {
+            return wifi;
+        }
     }
     
     //Getters y Setters

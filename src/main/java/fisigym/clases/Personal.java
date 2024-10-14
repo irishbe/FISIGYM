@@ -62,17 +62,18 @@ public class Personal extends Usuario {
         return "";
     }
 
-    public void registrarPersonal() {
+    /*public void registrarPersonal() {
         System.out.println("\n---------------- REGISTRAR ADMINISTRADOR ----------------");
         super.registrarUsuario();  // Llama al método de Usuario
         setRol(seleccionarRol());
         this.almacenarPersonal();
-    }
+    }*/
 
     public void menuAdministrador() {
         var ciudad = new Ciudad();
         var distrito = new Distrito();
         var gimnasio = new Gimnasio();
+        var entrenador = new Entrenador();
 
         int opcion = -1;
 
@@ -82,8 +83,8 @@ public class Personal extends Usuario {
             System.out.println("\n1.\tGestionar ciudades");
             System.out.println("2.\tGestionar distritos");
             System.out.println("3.\tGestionar gimnasios");
-            System.out.println("4.\tGestionar profesores");
-            System.out.println("5.\tGestionar entrenadores");
+            System.out.println("4.\tGestionar entrenadores");
+            System.out.println("5.\tGestionar entrenadores personales");
             System.out.println("6.\tGestionar clases");
             System.out.println("7.\tRegistrar membresía");
             System.out.println("\n0.\tCerrar sesión");
@@ -115,7 +116,7 @@ public class Personal extends Usuario {
                     }
                     case 4 -> {
                         utilidades.limpiarPantalla();
-                        System.out.println("Gestionando profesores...");
+                        entrenador.menuEntrenadores();
                         utilidades.pausa();
                     }
                     case 5 -> {

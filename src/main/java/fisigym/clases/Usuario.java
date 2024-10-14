@@ -49,6 +49,7 @@ public class Usuario {
     
     public void registrarUsuario() {
         System.out.println("\n------------------- REGISTRAR CUENTA -------------------");
+        
         System.out.print("Nombre de usuario:  "); nombreUsuario = scanner.nextLine().trim();
         
         if (nombreUsuario.isEmpty()) {
@@ -96,9 +97,8 @@ public class Usuario {
             return;
         }
         System.out.println("---------------------------------------------------------");
-        
+
         membresia.registrarMembresia(dni);
-        
         this.almacenarUsuario();
     }
     
@@ -141,6 +141,49 @@ public class Usuario {
         }
         
         return false;
+    }
+
+    private boolean verificarDni(String dni, String archivo) {
+        try (BufferedReader archivoReader = new BufferedReader(new FileReader(archivo))) {
+            String line;
+    
+            while ((line = archivoReader.readLine()) != null) {
+                String[] datos = line.split("><");
+                String dniGuardado = datos[3]; 
+                
+                if (dniGuardado.equals(dni)) {
+                    return true;
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Ocurrió un error al leer el archivo.");
+        }
+    
+        return false;
+    }
+
+    public String solicitarDni(String archivo, String mensaje) {
+        String dniIngresado = "";
+        boolean existe = false;
+
+        while (!existe && !dniIngresado.equals("0")) {
+            System.out.print("\n" + mensaje);
+            dniIngresado = scanner.nextLine();
+
+            if (dniIngresado.equals("0")) {
+                utilidades.limpiarPantalla();
+                System.out.println("Regresando al menú anterior...");
+                utilidades.pausa();
+                return dniIngresado;
+            }
+            
+            existe = verificarDni(dniIngresado, archivo);
+            if (!existe) {
+                System.out.println("El DNI " + dniIngresado + " no existe. Intente nuevamente.");
+            }
+        }
+
+        return dniIngresado;
     }
 
     public Membresia getMembresia() {
